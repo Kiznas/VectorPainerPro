@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,6 +24,7 @@ namespace VectorPainerPro
             InitializeComponent();
             pictureBox1.Image = new Bitmap(pictureBox1.Width, pictureBox1.Height);
             _temp = (Bitmap)pictureBox1.Image.Clone();
+            SaveUndo(_temp);
         }
 
         private class ArrayPoints
@@ -68,7 +70,7 @@ namespace VectorPainerPro
 
 
         private ArrayPoints arrayPoints = new ArrayPoints(2);
-        Pen pen = new Pen(Color.Black, 2f);
+        Pen pen = new Pen(Color.Black, 3f);
 
         private void toolStripLabel1_Click(object sender, EventArgs e)
         {
@@ -83,7 +85,6 @@ namespace VectorPainerPro
         {
             _isClicked = true;
             _start = e.Location;
-            SaveUndo(_temp);
         }
 
         private void pictureBox1_MouseUp(object sender, MouseEventArgs e)
@@ -91,7 +92,7 @@ namespace VectorPainerPro
             _isClicked = false;
             _temp = (Bitmap)pictureBox1.Image.Clone();
             arrayPoints.ResetPoints();
-            SaveRedo(_start, e.Location, Pens.Black);
+            SaveRedo(_temp);
         }
 
         private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
@@ -123,46 +124,49 @@ namespace VectorPainerPro
         }
         private Bitmap _savedImg;
         private int _currentImg;
-        private Point _x;
-        private Point _y;
-        private Pen _pen;
+        private int _localCount;
         private class Image
         {
             public Bitmap Img { get; set; }
-            public Point X { get; set; }
-            public Point Y { get; set; }
-            public Pen Pen { get; set; }
 
-            public Image(Bitmap image, Point x, Point y, Pen pen)
+            public Image(Bitmap image)
             {
                 Img = image;
-                X = x;
-                Y = y;
-                Pen = pen;
             }
+        }
+        private List<Bitmap> imgs = new List<Bitmap>();
+        public void Save(Bitmap img)
+        {
+            imgs.Add(img);
         }
 
         public void SaveUndo(Bitmap image)
         {
             _savedImg = (Bitmap)image.Clone();
-            new Image(_savedImg, _x, _y, _pen);
+            Save(_savedImg);
         }
 
-        public void SaveRedo(Point x, Point y, Pen pen)
+        public void SaveRedo(Bitmap image)
         {
-            _x = x;
-            _y = y;
-            _pen = pen;
-            new Image(_savedImg, _x, _y, _pen);
+            _savedImg = (Bitmap)image.Clone();
+            Save(_savedImg);
             _currentImg++;
+            _localCount = _currentImg;
         }
-
         public void Undo(object sender, EventArgs e)
         {
-            using (var bitmap = new Bitmap(_savedImg, pictureBox1.Width, pictureBox1.Height))
-            using (var graphics = Graphics.FromImage(_savedImg))
+            if (_localCount - 1 == 0)
             {
-                pictureBox1.Image?.Dispose();
+                toolStripButton3.Enabled = false;
+                toolStripButton2.Enabled = true;
+            }
+            else
+            {
+                toolStripButton3.Enabled = true;
+            }
+            using (var bitmap = new Bitmap(imgs[--_localCount], pictureBox1.Width, pictureBox1.Height))
+            using (var graphics = Graphics.FromImage(imgs[_localCount]))
+            {
                 pictureBox1.Image = (Bitmap)bitmap.Clone();
                 _temp = (Bitmap)pictureBox1.Image.Clone();
             }
@@ -170,15 +174,21 @@ namespace VectorPainerPro
 
         public void Redo(object sender, EventArgs e)
         {
-            if (_button == "Line")
+            using (var bitmap = new Bitmap(imgs[++_localCount], pictureBox1.Width, pictureBox1.Height))
+            using (var graphics = Graphics.FromImage(imgs[_localCount]))
             {
-                using (var bitmap = new Bitmap(_temp, pictureBox1.Width, pictureBox1.Height))
-                using (var graphics = Graphics.FromImage(bitmap))
-                {
-                    graphics.DrawLine(_pen, _x, _y);
-                    pictureBox1.Image?.Dispose();
-                    pictureBox1.Image = (Bitmap)bitmap.Clone();
-                }
+                pictureBox1.Image?.Dispose();
+                pictureBox1.Image = (Bitmap)bitmap.Clone();
+                _temp = (Bitmap)pictureBox1.Image.Clone();
+            }
+            if (_localCount + 1 == imgs.Count)
+            {
+                toolStripButton2.Enabled = false;
+                toolStripButton3.Enabled = true;
+            }
+            else
+            {
+                toolStripButton2.Enabled = true;
             }
         }
 
@@ -201,6 +211,11 @@ namespace VectorPainerPro
         private void toolStripButton4_Click(object sender, EventArgs e)
         {
             _button = "Pencil";
+        }
+
+        private void toolStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+
         }
     }
 }
