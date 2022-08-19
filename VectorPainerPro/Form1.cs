@@ -155,15 +155,6 @@ namespace VectorPainerPro
         }
         public void Undo(object sender, EventArgs e)
         {
-            if (_localCount - 1 == 0)
-            {
-                toolStripButton3.Enabled = false;
-                toolStripButton2.Enabled = true;
-            }
-            else
-            {
-                toolStripButton3.Enabled = true;
-            }
             using (var bitmap = new Bitmap(imgs[--_localCount], pictureBox1.Width, pictureBox1.Height))
             using (var graphics = Graphics.FromImage(imgs[_localCount]))
             {
@@ -181,15 +172,6 @@ namespace VectorPainerPro
                 pictureBox1.Image = (Bitmap)bitmap.Clone();
                 _temp = (Bitmap)pictureBox1.Image.Clone();
             }
-            if (_localCount + 1 == imgs.Count)
-            {
-                toolStripButton2.Enabled = false;
-                toolStripButton3.Enabled = true;
-            }
-            else
-            {
-                toolStripButton2.Enabled = true;
-            }
         }
 
 
@@ -201,11 +183,42 @@ namespace VectorPainerPro
         private void toolStripButton2_Click(object sender, EventArgs e)
         {
             Redo(sender, e);
+            if (_localCount == imgs.Count - 1)
+            {
+                toolStripButton3.Enabled = true;
+                toolStripButton2.Enabled = false;
+            }
+            else if (_localCount == 0)
+            {
+                toolStripButton3.Enabled = false;
+                toolStripButton2.Enabled = true;
+            }
+            else
+            {
+                toolStripButton3.Enabled = true;
+                toolStripButton2.Enabled = true;
+            }
+
         }
 
         private void toolStripButton3_Click(object sender, EventArgs e)
         {
             Undo(sender, e);
+            if (_localCount == imgs.Count - 1)
+            {
+                toolStripButton3.Enabled = true;
+                toolStripButton2.Enabled = false;
+            }
+            else if (_localCount == 0)
+            {
+                toolStripButton3.Enabled = false;
+                toolStripButton2.Enabled = true;
+            }
+            else
+            {
+                toolStripButton3.Enabled = true;
+                toolStripButton2.Enabled = true;
+            }
         }
 
         private void toolStripButton4_Click(object sender, EventArgs e)
