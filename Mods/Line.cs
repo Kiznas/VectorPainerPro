@@ -12,9 +12,9 @@ namespace Mods
     {
         public class LineMod : IPaintable
         {
-            public Bitmap Icon => Resources.Line;
+            public Bitmap Icon => Resources.line;
 
-            public string ToolTitle => "Line";
+            public string ToolTitle => nameof(Resources.line);
 
             public void Draw(Graphics graphics, Pen pen, Point start, Point end)
             {

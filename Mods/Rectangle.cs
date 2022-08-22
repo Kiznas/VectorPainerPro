@@ -8,9 +8,9 @@ namespace VectorModderPack
 {
     public class RectangleMod : IPaintable
     {
-        public Bitmap Icon => Resources.Rectangle;
+        public Bitmap Icon => Resources.rectangle;
 
-        public string ToolTitle => nameof(Resources.Rectangle);
+        public string ToolTitle => nameof(Resources.rectangle);
 
         public void Draw(Graphics graphics, Pen pen, Point start, Point end)
         {
