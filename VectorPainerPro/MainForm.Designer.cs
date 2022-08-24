@@ -41,6 +41,7 @@ namespace VectorPainerPro
             this.btnUndo = new System.Windows.Forms.ToolStripButton();
             this.btnRedo = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.btnSelect = new System.Windows.Forms.ToolStripButton();
             this.btnPencil = new System.Windows.Forms.ToolStripButton();
             this.openDllDialog = new System.Windows.Forms.OpenFileDialog();
             this.panelSettings = new System.Windows.Forms.Panel();
@@ -77,6 +78,7 @@ namespace VectorPainerPro
             this.btnUndo,
             this.btnRedo,
             this.toolStripSeparator3,
+            this.btnSelect,
             this.btnPencil});
             this.toolStripTools.Location = new System.Drawing.Point(0, 0);
             this.toolStripTools.Name = "toolStripTools";
@@ -159,8 +161,20 @@ namespace VectorPainerPro
             this.toolStripSeparator3.Name = "toolStripSeparator3";
             this.toolStripSeparator3.Size = new System.Drawing.Size(6, 27);
             // 
+            // btnSelect
+            // 
+            this.btnSelect.CheckOnClick = true;
+            this.btnSelect.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnSelect.Image = ((System.Drawing.Image)(resources.GetObject("btnSelect.Image")));
+            this.btnSelect.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnSelect.Name = "btnSelect";
+            this.btnSelect.Size = new System.Drawing.Size(24, 24);
+            this.btnSelect.Text = "Select";
+            this.btnSelect.Click += new System.EventHandler(this.btnSelect_Click);
+            // 
             // btnPencil
             // 
+            this.btnPencil.CheckOnClick = true;
             this.btnPencil.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.btnPencil.Image = ((System.Drawing.Image)(resources.GetObject("btnPencil.Image")));
             this.btnPencil.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -220,7 +234,6 @@ namespace VectorPainerPro
             this.labelMainColor.TabIndex = 9;
             this.labelMainColor.Text = "Main Color";
             this.labelMainColor.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.labelMainColor.Click += new System.EventHandler(this.labelMainColor_Click);
             // 
             // btnMainColor
             // 
@@ -358,5 +371,6 @@ namespace VectorPainerPro
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripButton btnLoadTool;
         private System.Windows.Forms.ToolStripButton btnSave;
+        private System.Windows.Forms.ToolStripButton btnSelect;
     }
 }

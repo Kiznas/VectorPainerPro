@@ -7,11 +7,11 @@ using VectorModderPack.VectorModderPack;
 
 namespace VectorModderPack
 {
-    public class RectangleMod : IPaintable
+    public class CircleMod : IPaintable
     {
-        public Bitmap Icon => Resources.rectangle;
+        public Bitmap Icon => Resources.circle;
 
-        public string ToolTitle => nameof(Resources.rectangle);
+        public string ToolTitle => nameof(Resources.circle);
         static void Swap<T>(ref T x, ref T y)
         {
             T t = y;
@@ -40,7 +40,7 @@ namespace VectorModderPack
             int width = endX - startX;
             int height = endY - startY;
 
-            graphics.DrawRectangle(pen, startX, startY, width, height);
+            graphics.DrawEllipse(pen, startX, startY, width, width);
         }
 
         public void Fill(Graphics graphics, Brush brush, Point start, Point end)
