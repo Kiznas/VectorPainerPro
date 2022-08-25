@@ -44,18 +44,18 @@ namespace Mods
                     Swap(ref startY, ref endY);
                 }
 
-                if (selection.X > start.X && selection.X < end.X &&
-                   selection.Y > start.Y && selection.Y < end.Y)
+                if (selection.X > startX && selection.X < endX &&
+                   selection.Y > startY && selection.Y < endY)
                {
-                    var dxc = selection.X - start.X;
-                    var dyc = selection.Y - start.Y;
-                    var dxl = end.X - start.X;
-                    var dyl = end.Y - start.Y;
+                    var dxc = selection.X - startX;
+                    var dyc = selection.Y - startY;
+                    var dxl = endX - startX;
+                    var dyl = endY - startY;
 
 
                     var cross = dxc * dyl - dyc * dxl;
 
-                    if (Math.Abs(cross) < 4000)
+                    if (Math.Abs(cross) < 1000)
                     {
                         isfound = true;
                     }

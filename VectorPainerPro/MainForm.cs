@@ -248,7 +248,7 @@ namespace VectorPainerPro
                 CreateShape();
             }
             else
-            {               
+            {
                 FindShape(e.Location);
             }
         }
@@ -464,6 +464,7 @@ namespace VectorPainerPro
             {
                 if (shape.ToolType == ToolType.Pensil)
                 {
+                    //found = false;
                     foreach (var shapePoint in shape.Points)
                     {
                         if (Math.Abs(shapePoint.X - point.X) < 10 && Math.Abs(shapePoint.Y - point.Y) < 10)
@@ -490,7 +491,10 @@ namespace VectorPainerPro
 
                     frame = (result!.Value.Item1, result!.Value.Item2);
                     found = frame.Item1 != point || frame.Item2 != point;
-                    if (found) break;
+                    if (found)
+                    {
+                        break;
+                    }
                 }
             }
             if (found)
