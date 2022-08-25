@@ -16,6 +16,11 @@ namespace Mods
 
             public string ToolTitle => nameof(Resources.line);
 
+            public (Point, Point) CheckIsFound(Point start, Point end, Point selection)
+            {
+                return (start, end);
+            }
+
             public void Draw(Graphics graphics, Pen pen, Point start, Point end)
             {
                 graphics.DrawLine(pen, start, end);

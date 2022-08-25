@@ -1,22 +1,17 @@
-﻿using Microsoft.VisualBasic;
-using System;
-using System.Collections;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using VectorModderPack.VectorModderPack;
-using static System.Windows.Forms.AxHost;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
-using static VectorPainerPro.MainForm;
 
 namespace VectorPainerPro
 {
@@ -34,6 +29,7 @@ namespace VectorPainerPro
         private Point startPoint;
 
         private Action<Graphics, Pen, Point, Point>? DrawSomething;
+        private Func<Point, Point, Point, (Point, Point)>? CheckIsFound;
 
         Bitmap _temp; 
 
@@ -109,22 +105,29 @@ namespace VectorPainerPro
                 var toolTitle = GetPropertyFromType<string>(type, nameof(IPaintable.ToolTitle), obj);
                 var icon = GetPropertyFromType<Bitmap>(type, nameof(IPaintable.Icon), obj);
                 var onClickMethod = type.GetMethod(nameof(IPaintable.Draw), BindingFlags.Public | BindingFlags.Instance);
+                var checkIsFoundMethod = type.GetMethod(nameof(IPaintable.CheckIsFound), BindingFlags.Public | BindingFlags.Instance);
+
                 if (onClickMethod != null)
                 {
                     var toolAction = (Action<Graphics, Pen, Point, Point>)Delegate
                         .CreateDelegate(typeof(Action<Graphics, Pen, Point, Point>), obj, onClickMethod);
+
+                    var toolIsFoundFunction = (Func<Point, Point, Point, (Point, Point)>)Delegate
+                        .CreateDelegate(typeof(Func<Point, Point, Point, (Point, Point)>), obj, checkIsFoundMethod);
 
                     var onClick = new EventHandler((x, y) =>
                     {
                         currentToolType = ToolType.Mods;
                         currentToolName = toolTitle;
                         DrawSomething = toolAction;
+                        CheckIsFound = toolIsFoundFunction;
                     });
 
                     var newTool = new Tool()
                     {
                         ToolAction = toolAction,
-                        ToolName = toolTitle
+                        ToolName = toolTitle,
+                        ToolIsFoundFunction = toolIsFoundFunction
                     };
 
                     toolList.Add(newTool);
@@ -444,9 +447,16 @@ namespace VectorPainerPro
         }
         #endregion
 
+
+        public int AddTwoNumbers(int number1, int number2)
+        {
+            return number1 + number2;
+        }
+
         private void FindShape(Point point)
         {
             var found = false;
+            (Point, Point) frame = (point, point);
             Shape foundShape = new Shape();
             
 
@@ -458,20 +468,33 @@ namespace VectorPainerPro
                     {
                         if (Math.Abs(shapePoint.X - point.X) < 10 && Math.Abs(shapePoint.Y - point.Y) < 10)
                         {
-                            foundShape = shape;
                             found = true;
+
+                            var minX = shape.Points.Select(x => x.X).Min();
+                            var minY = shape.Points.Select(x => x.Y).Min();
+                            var maxX = shape.Points.Select(x => x.X).Max();
+                            var maxY = shape.Points.Select(x => x.Y).Max();
+
+                            var framePointStart = new Point(minX, minY);
+                            var framePointEnd = new Point(maxX, maxY);
+
+                            frame = (framePointStart, framePointEnd);
                             break;
                         }
                     }
                 }   
                 else
                 {
+                    CheckIsFound = toolList!.Where(x => x.ToolName == shape.ToolName).Select(x => x.ToolIsFoundFunction).FirstOrDefault();
+                    var result = (CheckIsFound?.Invoke(shape.Points[0], shape.Points[1], point));
                     
+                    frame = (result!.Value.Item1, result!.Value.Item2);
+                    found = frame.Item1 != point || frame.Item2 != point;
                 }
             }
             if (found)
             {
-                DrawSelectionFrame(foundShape);
+                DrawSelectionFrame(frame);
                 found = false;
             }
             else
@@ -485,14 +508,16 @@ namespace VectorPainerPro
             }
         }
 
-        private void DrawSelectionFrame(Shape shape)
+        private void DrawSelectionFrame((Point, Point) frame)
         {
-            var minX = shape.Points.Select(x => x.X).Min();
-            var minY = shape.Points.Select(x => x.Y).Min();
-            var maxX = shape.Points.Select(x => x.X).Max();
-            var maxY = shape.Points.Select(x => x.Y).Max();
-            int width = maxX - minX;
-            int height = maxY - minY;
+
+            var minX = frame.Item1.X;
+            var minY = frame.Item1.Y;
+            var maxX = frame.Item2.X;
+            var maxY = frame.Item2.Y;
+
+            int width = Math.Abs(frame.Item2.X - frame.Item1.X);
+            int height = Math.Abs(frame.Item2.Y - frame.Item1.Y);
 
             var _selection = new Bitmap(_temp);
 
@@ -504,19 +529,17 @@ namespace VectorPainerPro
 
                     Pen pen = new(Color.Black, 1);
                     SolidBrush blueBrush = new SolidBrush(Color.Black);
-                    List<Rectangle> frame = new List<Rectangle>();
-
 
                     Rectangle rect11 = new Rectangle(minX - 6, minY - 6, 6, 6);
-                    Rectangle rect12 = new Rectangle(minX - 6 + (width + 12) / 2, minY - 6, 6, 6);
-                    Rectangle rect13 = new Rectangle(maxX + 6, minY - 6, 6, 6);
+                    Rectangle rect12 = new Rectangle(minX - 6 + (width) / 2, minY - 6, 6, 6);
+                    Rectangle rect13 = new Rectangle(maxX, minY - 6, 6, 6);
 
-                    Rectangle rect21 = new Rectangle(minX - 6, minY + (height + 12) / 2, 6, 6);
-                    Rectangle rect23 = new Rectangle(maxX + 6, minY + (height + 12) / 2, 6, 6);
+                    Rectangle rect21 = new Rectangle(minX - 6, minY + (height) / 2, 6, 6);
+                    Rectangle rect23 = new Rectangle(maxX, minY + (height) / 2, 6, 6);
 
-                    Rectangle rect31 = new Rectangle(minX - 6, maxY + 6, 6, 6);
-                    Rectangle rect32 = new Rectangle(minX - 6 + (width + 12) / 2, maxY + 6, 6, 6);
-                    Rectangle rect33 = new Rectangle(maxX + 6, maxY + 6, 6, 6);
+                    Rectangle rect31 = new Rectangle(minX - 6, maxY, 6, 6);
+                    Rectangle rect32 = new Rectangle(minX - 6 + (width) / 2, maxY, 6, 6);
+                    Rectangle rect33 = new Rectangle(maxX, maxY, 6, 6);
 
                     graphics.FillRectangle(blueBrush, rect11);
                     graphics.FillRectangle(blueBrush, rect12);
@@ -531,7 +554,6 @@ namespace VectorPainerPro
 
                     pictureBox.Image?.Dispose();
                     pictureBox.Image = (Bitmap)bitmap.Clone();
-                    //_temp = (Bitmap)pictureBox.Image.Clone();
                 }
             }
 

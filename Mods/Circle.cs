@@ -19,6 +19,11 @@ namespace VectorModderPack
             x = t;
         }
 
+        public (Point, Point) CheckIsFound(Point start, Point end, Point selection)
+        {
+            return (start, end);
+        }
+
         public void Draw(Graphics graphics, Pen pen, Point start, Point end)
         {
 

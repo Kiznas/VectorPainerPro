@@ -163,7 +163,6 @@ namespace VectorPainerPro
             // 
             // btnSelect
             // 
-            this.btnSelect.CheckOnClick = true;
             this.btnSelect.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.btnSelect.Image = ((System.Drawing.Image)(resources.GetObject("btnSelect.Image")));
             this.btnSelect.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -174,7 +173,6 @@ namespace VectorPainerPro
             // 
             // btnPencil
             // 
-            this.btnPencil.CheckOnClick = true;
             this.btnPencil.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.btnPencil.Image = ((System.Drawing.Image)(resources.GetObject("btnPencil.Image")));
             this.btnPencil.ImageTransparentColor = System.Drawing.Color.Magenta;
