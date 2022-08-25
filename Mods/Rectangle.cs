@@ -22,7 +22,7 @@ namespace VectorModderPack
         public (Point, Point) CheckIsFound(Point start, Point end, Point selection)
         {
             bool isfound = false;
-            //if (Math.Abs(selection.X - start.X) < 10 && Math.Abs(selection.X - end.X) < 10)
+
             if ((selection.X > start.X && selection.X < end.X) &&
                 (selection.Y > start.Y && selection.Y < end.Y))
             {

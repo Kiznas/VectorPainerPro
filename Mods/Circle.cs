@@ -1,5 +1,6 @@
 ﻿using Mods.Properties;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.IO;
@@ -21,7 +22,40 @@ namespace VectorModderPack
 
         public (Point, Point) CheckIsFound(Point start, Point end, Point selection)
         {
-            return (start, end);
+            bool isfound = false;
+            int radius = 0;
+
+            int distX = Math.Abs(end.X - start.X);
+            int distY = Math.Abs(end.Y - start.Y);
+
+            if (distX < distY)
+            {
+                radius = distX / 2;
+            }
+            else
+            {
+                radius = distY / 2;
+            }
+
+            Point center = new Point(start.X + radius, start.Y + radius);
+
+
+
+            isfound = (Math.Pow((selection.X - center.X),2) + Math.Pow((selection.Y - center.Y),2) < Math.Pow(radius,2));
+
+            if (isfound)
+            {
+                Point point1 =
+                    new Point(start.X, start.Y);
+                Point point2 =
+                    new Point(start.X + 2 * radius, start.Y + 2 * radius);
+                return (point1, point2);
+            }
+            else
+            {
+                return (selection, selection);
+            }    
+            
         }
 
         public void Draw(Graphics graphics, Pen pen, Point start, Point end)

@@ -487,9 +487,10 @@ namespace VectorPainerPro
                 {
                     CheckIsFound = toolList!.Where(x => x.ToolName == shape.ToolName).Select(x => x.ToolIsFoundFunction).FirstOrDefault();
                     var result = (CheckIsFound?.Invoke(shape.Points[0], shape.Points[1], point));
-                    
+
                     frame = (result!.Value.Item1, result!.Value.Item2);
                     found = frame.Item1 != point || frame.Item2 != point;
+                    if (found) break;
                 }
             }
             if (found)
