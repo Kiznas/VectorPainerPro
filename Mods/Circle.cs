@@ -1,5 +1,6 @@
 ﻿using Mods.Properties;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.IO;
@@ -7,11 +8,11 @@ using VectorModderPack.VectorModderPack;
 
 namespace VectorModderPack
 {
-    public class RectangleMod : IPaintable
+    public class CircleMod : IPaintable
     {
-        public Bitmap Icon => Resources.rectangle;
+        public Bitmap Icon => Resources.circle;
 
-        public string ToolTitle => nameof(Resources.rectangle);
+        public string ToolTitle => nameof(Resources.circle);
         static void Swap<T>(ref T x, ref T y)
         {
             T t = y;
@@ -22,19 +23,39 @@ namespace VectorModderPack
         public (Point, Point) CheckIsFound(Point start, Point end, Point selection)
         {
             bool isfound = false;
+            int radius = 0;
 
-            if ((selection.X > start.X && selection.X < end.X) &&
-                (selection.Y > start.Y && selection.Y < end.Y))
+            int distX = Math.Abs(end.X - start.X);
+            int distY = Math.Abs(end.Y - start.Y);
+
+            if (distX < distY)
             {
-                isfound = true;
+                radius = distX / 2;
             }
+            else
+            {
+                radius = distY / 2;
+            }
+
+            Point center = new Point(start.X + radius, start.Y + radius);
+
+
+
+            isfound = (Math.Pow((selection.X - center.X),2) + Math.Pow((selection.Y - center.Y),2) < Math.Pow(radius,2));
 
             if (isfound)
             {
-                return (start, end);
+                Point point1 =
+                    new Point(start.X, start.Y);
+                Point point2 =
+                    new Point(start.X + 2 * radius, start.Y + 2 * radius);
+                return (point1, point2);
             }
-            else return (selection, selection);
-
+            else
+            {
+                return (selection, selection);
+            }    
+            
         }
 
         public void Draw(Graphics graphics, Pen pen, Point start, Point end)
@@ -58,7 +79,7 @@ namespace VectorModderPack
             int width = endX - startX;
             int height = endY - startY;
 
-            graphics.DrawRectangle(pen, startX, startY, width, height);
+            graphics.DrawEllipse(pen, startX, startY, width, width);
         }
 
         public void Fill(Graphics graphics, Brush brush, Point start, Point end)
