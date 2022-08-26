@@ -82,7 +82,7 @@ namespace VectorPainerPro
             this.btnPencil});
             this.toolStripTools.Location = new System.Drawing.Point(0, 0);
             this.toolStripTools.Name = "toolStripTools";
-            this.toolStripTools.Size = new System.Drawing.Size(1102, 27);
+            this.toolStripTools.Size = new System.Drawing.Size(945, 27);
             this.toolStripTools.TabIndex = 3;
             this.toolStripTools.Text = "toolStrip1";
             // 
@@ -194,17 +194,18 @@ namespace VectorPainerPro
             this.panelSettings.Controls.Add(this.labelLineThickness);
             this.panelSettings.Controls.Add(this.trackBarLineThickness);
             this.panelSettings.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panelSettings.Location = new System.Drawing.Point(1015, 0);
+            this.panelSettings.Location = new System.Drawing.Point(870, 0);
+            this.panelSettings.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panelSettings.Name = "panelSettings";
-            this.panelSettings.Size = new System.Drawing.Size(87, 636);
+            this.panelSettings.Size = new System.Drawing.Size(75, 499);
             this.panelSettings.TabIndex = 7;
             // 
             // labelFillColor
             // 
             this.labelFillColor.Font = new System.Drawing.Font("Segoe UI Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.labelFillColor.Location = new System.Drawing.Point(3, 95);
+            this.labelFillColor.Location = new System.Drawing.Point(3, 86);
             this.labelFillColor.Name = "labelFillColor";
-            this.labelFillColor.Size = new System.Drawing.Size(84, 22);
+            this.labelFillColor.Size = new System.Drawing.Size(72, 18);
             this.labelFillColor.TabIndex = 11;
             this.labelFillColor.Text = "Fill Color";
             this.labelFillColor.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -215,9 +216,10 @@ namespace VectorPainerPro
             this.btnFillColor.ForeColor = System.Drawing.SystemColors.Control;
             this.btnFillColor.Image = ((System.Drawing.Image)(resources.GetObject("btnFillColor.Image")));
             this.btnFillColor.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.btnFillColor.Location = new System.Drawing.Point(3, 120);
+            this.btnFillColor.Location = new System.Drawing.Point(3, 96);
+            this.btnFillColor.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnFillColor.Name = "btnFillColor";
-            this.btnFillColor.Size = new System.Drawing.Size(81, 66);
+            this.btnFillColor.Size = new System.Drawing.Size(69, 66);
             this.btnFillColor.TabIndex = 10;
             this.btnFillColor.UseVisualStyleBackColor = true;
             this.btnFillColor.Click += new System.EventHandler(this.btnFillColor_Click);
@@ -228,7 +230,7 @@ namespace VectorPainerPro
             this.labelMainColor.Font = new System.Drawing.Font("Segoe UI Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.labelMainColor.Location = new System.Drawing.Point(0, 0);
             this.labelMainColor.Name = "labelMainColor";
-            this.labelMainColor.Size = new System.Drawing.Size(87, 22);
+            this.labelMainColor.Size = new System.Drawing.Size(75, 18);
             this.labelMainColor.TabIndex = 9;
             this.labelMainColor.Text = "Main Color";
             this.labelMainColor.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -239,9 +241,10 @@ namespace VectorPainerPro
             this.btnMainColor.ForeColor = System.Drawing.SystemColors.Control;
             this.btnMainColor.Image = ((System.Drawing.Image)(resources.GetObject("btnMainColor.Image")));
             this.btnMainColor.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.btnMainColor.Location = new System.Drawing.Point(3, 25);
+            this.btnMainColor.Location = new System.Drawing.Point(3, 20);
+            this.btnMainColor.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnMainColor.Name = "btnMainColor";
-            this.btnMainColor.Size = new System.Drawing.Size(81, 66);
+            this.btnMainColor.Size = new System.Drawing.Size(69, 64);
             this.btnMainColor.TabIndex = 8;
             this.btnMainColor.UseVisualStyleBackColor = true;
             this.btnMainColor.Click += new System.EventHandler(this.btnMainColor_Click);
@@ -249,9 +252,9 @@ namespace VectorPainerPro
             // labelLineThickness
             // 
             this.labelLineThickness.Font = new System.Drawing.Font("Segoe UI Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.labelLineThickness.Location = new System.Drawing.Point(3, 189);
+            this.labelLineThickness.Location = new System.Drawing.Point(3, 164);
             this.labelLineThickness.Name = "labelLineThickness";
-            this.labelLineThickness.Size = new System.Drawing.Size(84, 35);
+            this.labelLineThickness.Size = new System.Drawing.Size(72, 28);
             this.labelLineThickness.TabIndex = 7;
             this.labelLineThickness.Text = "Line Thickness";
             this.labelLineThickness.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -260,10 +263,11 @@ namespace VectorPainerPro
             // 
             this.trackBarLineThickness.AutoSize = false;
             this.trackBarLineThickness.LargeChange = 10;
-            this.trackBarLineThickness.Location = new System.Drawing.Point(26, 229);
+            this.trackBarLineThickness.Location = new System.Drawing.Point(18, 184);
+            this.trackBarLineThickness.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.trackBarLineThickness.Name = "trackBarLineThickness";
             this.trackBarLineThickness.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.trackBarLineThickness.Size = new System.Drawing.Size(49, 210);
+            this.trackBarLineThickness.Size = new System.Drawing.Size(42, 168);
             this.trackBarLineThickness.TabIndex = 6;
             this.trackBarLineThickness.Tag = "";
             this.trackBarLineThickness.TickStyle = System.Windows.Forms.TickStyle.Both;
@@ -275,7 +279,7 @@ namespace VectorPainerPro
             this.pictureBox.Location = new System.Drawing.Point(3, 2);
             this.pictureBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.pictureBox.Name = "pictureBox";
-            this.pictureBox.Size = new System.Drawing.Size(800, 600);
+            this.pictureBox.Size = new System.Drawing.Size(686, 480);
             this.pictureBox.TabIndex = 8;
             this.pictureBox.TabStop = false;
             this.pictureBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDown);
@@ -288,17 +292,19 @@ namespace VectorPainerPro
             this.panelPictureBox.Controls.Add(this.pictureBox);
             this.panelPictureBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelPictureBox.Location = new System.Drawing.Point(0, 0);
+            this.panelPictureBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panelPictureBox.Name = "panelPictureBox";
-            this.panelPictureBox.Size = new System.Drawing.Size(1015, 636);
+            this.panelPictureBox.Size = new System.Drawing.Size(870, 499);
             this.panelPictureBox.TabIndex = 9;
             // 
             // statusStrip
             // 
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.statusLabelCanvaSize});
-            this.statusStrip.Location = new System.Drawing.Point(0, 663);
+            this.statusStrip.Location = new System.Drawing.Point(0, 526);
             this.statusStrip.Name = "statusStrip";
-            this.statusStrip.Size = new System.Drawing.Size(1102, 22);
+            this.statusStrip.Padding = new System.Windows.Forms.Padding(1, 0, 12, 0);
+            this.statusStrip.Size = new System.Drawing.Size(945, 22);
             this.statusStrip.TabIndex = 10;
             this.statusStrip.Text = "statusStrip1";
             // 
@@ -314,15 +320,16 @@ namespace VectorPainerPro
             this.panelMain.Controls.Add(this.panelSettings);
             this.panelMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelMain.Location = new System.Drawing.Point(0, 27);
+            this.panelMain.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panelMain.Name = "panelMain";
-            this.panelMain.Size = new System.Drawing.Size(1102, 636);
+            this.panelMain.Size = new System.Drawing.Size(945, 499);
             this.panelMain.TabIndex = 11;
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1102, 685);
+            this.ClientSize = new System.Drawing.Size(945, 548);
             this.Controls.Add(this.panelMain);
             this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.toolStripTools);

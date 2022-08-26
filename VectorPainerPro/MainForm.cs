@@ -20,7 +20,7 @@ namespace VectorPainerPro
         public enum ToolType
         {
             Select,
-            Pensil,
+            Pencil,
             Mods
         }
         
@@ -213,8 +213,8 @@ namespace VectorPainerPro
 
         private void btnPencil_Click(object sender, EventArgs e)
         {
-            currentToolType = ToolType.Pensil;
-            currentToolName = "pensil";
+            currentToolType = ToolType.Pencil;
+            currentToolName = "Pencil";
         }
 
         private void btnMainColor_Click(object sender, EventArgs e)
@@ -313,11 +313,10 @@ namespace VectorPainerPro
 
         public void DrawShape(Shape shape)
         {
-            if (currentToolType == ToolType.Pensil)
+            if (currentToolType == ToolType.Pencil)
             {
                 Graphics graphics = Graphics.FromImage(_temp);
 
-                graphics.SmoothingMode = SmoothingMode.AntiAlias;
                 pen.StartCap = LineCap.Round;
                 pen.EndCap = LineCap.Round;
                 pen.LineJoin = LineJoin.Round;
@@ -340,8 +339,6 @@ namespace VectorPainerPro
                 {
                     using (var graphics = Graphics.FromImage(bitmap))
                     {
-                        graphics.SmoothingMode = SmoothingMode.AntiAlias;
-
                         pen.StartCap = LineCap.Flat;
                         pen.EndCap = LineCap.Flat;
                         pen.LineJoin = LineJoin.Miter;
@@ -371,15 +368,13 @@ namespace VectorPainerPro
 
         private void DrawShapeFromList(Shape shape)
         {
-            if (shape.ToolType == ToolType.Pensil)
+            if (shape.ToolType == ToolType.Pencil)
             {
                 foreach (var point in shape.Points!)
                 {
                     using (var bitmap = new Bitmap(_temp, pictureBox.Width, pictureBox.Height))
                     {
                         Graphics graphics = Graphics.FromImage(_temp);
-
-                        graphics.SmoothingMode = SmoothingMode.AntiAlias;
 
                         Pen pen = new(Color.FromArgb(shape.MainColor), shape.Width);
                         pen.StartCap = LineCap.Round;
@@ -404,8 +399,6 @@ namespace VectorPainerPro
                 {
                     using (var graphics = Graphics.FromImage(bitmap))
                     {
-                        graphics.SmoothingMode = SmoothingMode.AntiAlias;
-
                         Pen pen = new(Color.FromArgb(shape.MainColor), shape.Width);
                         currentToolName = shape.ToolName;
                         DrawSomething = toolList!.Where(x => x.ToolName == currentToolName).Select(x => x.ToolAction).FirstOrDefault();
@@ -447,12 +440,7 @@ namespace VectorPainerPro
         }
         #endregion
 
-
-        public int AddTwoNumbers(int number1, int number2)
-        {
-            return number1 + number2;
-        }
-
+        #region FramesPart
         private void FindShape(Point point)
         {
             var found = false;
@@ -462,7 +450,7 @@ namespace VectorPainerPro
 
             foreach (var shape in fileShapes)
             {
-                if (shape.ToolType == ToolType.Pensil)
+                if (shape.ToolType == ToolType.Pencil)
                 {
                     //found = false;
                     foreach (var shapePoint in shape.Points)
@@ -565,12 +553,7 @@ namespace VectorPainerPro
 
 
         }
-
-        private void SetStatusStripInfo()
-        {
-            statusLabelCanvaSize.Text = "Image Size " + pictureBox.Width + " : " + pictureBox.Height;
-        }
-
+        #endregion
 
         #region SaveOpen
         private void SaveFile(string fileName)
@@ -606,5 +589,9 @@ namespace VectorPainerPro
             }              
         }
         #endregion
+        private void SetStatusStripInfo()
+        {
+            statusLabelCanvaSize.Text = "Image Size " + pictureBox.Width + " : " + pictureBox.Height;
+        }
     }
 }
