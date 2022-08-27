@@ -9,6 +9,7 @@ using System.Net;
 using System.Reflection;
 using System.Text;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using VectorModderPack.VectorModderPack;
@@ -23,7 +24,7 @@ namespace VectorPainerPro
             Pencil,
             Mods
         }
-        
+
         private ToolType currentToolType;
         private string currentToolName;
         private Point startPoint;
@@ -31,7 +32,7 @@ namespace VectorPainerPro
         private Action<Graphics, Pen, Point, Point>? DrawSomething;
         private Func<Point, Point, Point, (Point, Point)>? CheckIsFound;
 
-        Bitmap _temp; 
+        Bitmap _temp;
 
         ColorDialog colorDialog = new ColorDialog();
         Color newColor;
@@ -46,7 +47,6 @@ namespace VectorPainerPro
             SetStatusStripInfo();
         }
 
-        
         public List<Shape> fileShapes = new List<Shape>();
         public List<Shape> fileShapesRedo = new List<Shape>();
         public Shape currentShape;
@@ -57,8 +57,6 @@ namespace VectorPainerPro
 
         public List<Tool> toolList = new List<Tool>();
 
-        
-
         #region LoadTools
         private T GetPropertyFromType<T>(Type type, string propertyTitle, object instance)
         {
@@ -67,7 +65,7 @@ namespace VectorPainerPro
                   propertyTitle,
                   BindingFlags.Public | BindingFlags.Instance);
 
-            
+
             var propertyValue = property!.GetValue(instance);
 
             return (T)propertyValue!;
@@ -280,7 +278,7 @@ namespace VectorPainerPro
             {
                 _temp = (Bitmap)pictureBox.Image.Clone();
                 arrayPoints.ResetPoints();
-            }    
+            }
         }
 
         public void CreateShape()
@@ -308,7 +306,7 @@ namespace VectorPainerPro
             foreach (var shape in fileShapes)
             {
                 DrawShape(shape);
-            }    
+            }
         }
 
         public void DrawShape(Shape shape)
@@ -324,14 +322,14 @@ namespace VectorPainerPro
                 var point = shape.Points!.Last();
                 {
                     arrayPoints.Setpoint(point.X, point.Y);
-                    
+
                     if (arrayPoints.GetCountPoints() >= 2)
                     {
                         graphics.DrawLines(pen, arrayPoints.GetPoints());
                         pictureBox.Image = _temp;
                         arrayPoints.Setpoint(point.X, point.Y);
                     }
-                }   
+                }
             }
             else if (currentToolType == ToolType.Mods)
             {
@@ -446,7 +444,7 @@ namespace VectorPainerPro
             var found = false;
             (Point, Point) frame = (point, point);
             Shape foundShape = new Shape();
-            
+
 
             foreach (var shape in fileShapes)
             {
@@ -471,7 +469,7 @@ namespace VectorPainerPro
                             break;
                         }
                     }
-                }   
+                }
                 else
                 {
                     CheckIsFound = toolList!.Where(x => x.ToolName == shape.ToolName).Select(x => x.ToolIsFoundFunction).FirstOrDefault();
@@ -585,13 +583,142 @@ namespace VectorPainerPro
                 {
                     fileShapes = loadedShapes;
                     DrawFromList();
-                }             
-            }              
+                }
+            }
         }
         #endregion
+
+        #region Animation
+        CancellationTokenSource cancelationTokenSource;
+        bool wasStopped;
+        FigureAnimation figureAnimation;
+        ToolParams currentParams;
+        int currentAnimationIndex;
+        int currentRepeatIndex;
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if (!wasStopped)
+            {
+                using (StreamReader sr = new StreamReader(
+                    @"C:\Users\Klimt\AppData\Local\Temp\tmpC8EC.tmp"))
+                {
+                    figureAnimation = JsonSerializer.Deserialize<FigureAnimation>(sr.ReadToEnd());
+                }
+
+                currentParams = (ToolParams)figureAnimation.ToolParams.Clone();
+                currentAnimationIndex = 0;
+                currentRepeatIndex = 0;
+            }
+
+            cancelationTokenSource = new CancellationTokenSource();
+            Thread thread = new Thread(() => Test(cancelationTokenSource.Token));
+            thread.Start();
+        }
+
+        private void Test(CancellationToken cancellationToken)
+        {
+            do
+            {
+                using (var pen = new Pen(
+                    Color.FromArgb(figureAnimation.ToolParams.Color), figureAnimation.ToolParams.LineWidth))
+                {
+                    for (; currentAnimationIndex < figureAnimation.AnimationActions.Count; ++currentAnimationIndex)
+                    {
+                        for (; currentRepeatIndex < figureAnimation.AnimationActions[currentAnimationIndex].Count; ++currentRepeatIndex)
+                        {
+                            using (var bitmap = new Bitmap(pictureBox.Width, pictureBox.Height))
+                            {
+                                using (var graphics = Graphics.FromImage(bitmap))
+                                {
+                                    graphics.DrawRectangle(
+                                       pen,
+                                       currentParams.StartX,
+                                       currentParams.StartY,
+                                       currentParams.EndX,
+                                       currentParams.EndY);
+
+                                    currentParams.Update(figureAnimation.AnimationActions[currentAnimationIndex]);
+                                    Thread.Sleep(10);
+                                    pictureBox.Image?.Dispose();
+                                    pictureBox.Image = (Bitmap)bitmap.Clone();
+
+                                    if (cancellationToken.IsCancellationRequested)
+                                    {
+                                        wasStopped = true;
+                                        return;
+                                    }
+                                }
+                            }
+                        }
+
+                        currentRepeatIndex = 0;
+                    }
+
+                    currentAnimationIndex = 0;
+                    currentParams = (ToolParams)figureAnimation.ToolParams.Clone();
+                }
+            } while (true);
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            cancelationTokenSource.Cancel();
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            var random = new Random();
+            var size = 100;
+            var widthCenter = pictureBox.Width / 2;
+            var heightCenter = pictureBox.Height / 2;
+            var animationActions = new List<AnimationAction>();
+            for (int i = 0; i < 5; i++)
+            {
+                animationActions.Add(new AnimationAction
+                {
+                    Count = (short)random.Next(10, 100),
+                    DeltaStartX = (short)random.Next(-2, 2),
+                    DeltaStartY = (short)random.Next(-2, 2)
+                });
+            }
+
+            var animation = new FigureAnimation
+            {
+                ToolTitle = nameof(Rectangle),
+                ToolParams = new ToolParams
+                {
+                    Color = Color.FromArgb(
+                        random.Next(0, 255),
+                        random.Next(0, 255),
+                        random.Next(0, 255)).ToArgb(),
+                    LineWidth = 2,
+                    StartX = widthCenter - size,
+                    EndX = heightCenter - size,
+                    StartY = size,
+                    EndY = size
+                },
+                AnimationActions = animationActions
+            };
+
+            var filepath = Path.GetTempFileName();
+            using (StreamWriter sw = new StreamWriter(filepath))
+            {
+                sw.Write(JsonSerializer.Serialize(animation));
+            }
+            MessageBox.Show(filepath);
+
+        }
+        #endregion
+
         private void SetStatusStripInfo()
         {
             statusLabelCanvaSize.Text = "Image Size " + pictureBox.Width + " : " + pictureBox.Height;
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
