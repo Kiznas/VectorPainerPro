@@ -15,33 +15,17 @@ namespace VectorModderPack
         public string ToolTitle => nameof(Resources.circle);
         static void Swap<T>(ref T x, ref T y)
         {
-            T t = y;
-            y = x;
-            x = t;
+            (x, y) = (y, x);
         }
 
         public (Point, Point) CheckIsFound(Point start, Point end, Point selection)
         {
-            bool isfound = false;
-            int radius = 0;
-
             int distX = Math.Abs(end.X - start.X);
-            int distY = Math.Abs(end.Y - start.Y);
-
-            if (distX < distY)
-            {
-                radius = distX / 2;
-            }
-            else
-            {
-                radius = distY / 2;
-            }
+            int radius = distX / 2;
 
             Point center = new Point(start.X + radius, start.Y + radius);
 
-
-
-            isfound = (Math.Pow((selection.X - center.X),2) + Math.Pow((selection.Y - center.Y),2) < Math.Pow(radius,2));
+            bool isfound = Math.Pow(selection.X - center.X, 2) + Math.Pow(selection.Y - center.Y, 2) < Math.Pow(radius, 2);
 
             if (isfound)
             {
@@ -54,8 +38,20 @@ namespace VectorModderPack
             else
             {
                 return (selection, selection);
-            }    
-            
+            }
+        }
+
+        public (Point, Point) GetSelectionFrame(Point start, Point end)
+        {
+            int distX = Math.Abs(end.X - start.X);
+            int radius = distX / 2;
+
+            Point point1 =
+                new Point(start.X, start.Y);
+            Point point2 =
+                new Point(start.X + 2 * radius, start.Y + 2 * radius);
+
+            return (point1, point2);
         }
 
         public void Draw(Graphics graphics, Pen pen, Point start, Point end)

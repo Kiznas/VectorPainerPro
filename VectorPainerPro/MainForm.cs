@@ -26,14 +26,17 @@ namespace VectorPainerPro
         
         private ToolType currentToolType;
         private string currentToolName;
+        private Shape? selectedShape;
         private Point startPoint;
 
         private Action<Graphics, Pen, Point, Point>? DrawSomething;
         private Func<Point, Point, Point, (Point, Point)>? CheckIsFound;
+        private Func<Point, Point, (Point, Point)>? GetSelectionFrame;
 
         Bitmap _temp; 
 
-        ColorDialog colorDialog = new ColorDialog();
+        ColorDialog mainColorDialog = new ColorDialog();
+        ColorDialog fillColorDialog = new ColorDialog();
         Color newColor;
         Color newFillColor;
         Pen pen = new Pen(Color.Black, 1);
@@ -46,7 +49,6 @@ namespace VectorPainerPro
             SetStatusStripInfo();
         }
 
-        
         public List<Shape> fileShapes = new List<Shape>();
         public List<Shape> fileShapesRedo = new List<Shape>();
         public Shape currentShape;
@@ -57,8 +59,6 @@ namespace VectorPainerPro
 
         public List<Tool> toolList = new List<Tool>();
 
-        
-
         #region LoadTools
         private T GetPropertyFromType<T>(Type type, string propertyTitle, object instance)
         {
@@ -67,7 +67,6 @@ namespace VectorPainerPro
                   propertyTitle,
                   BindingFlags.Public | BindingFlags.Instance);
 
-            
             var propertyValue = property!.GetValue(instance);
 
             return (T)propertyValue!;
@@ -106,28 +105,34 @@ namespace VectorPainerPro
                 var icon = GetPropertyFromType<Bitmap>(type, nameof(IPaintable.Icon), obj);
                 var onClickMethod = type.GetMethod(nameof(IPaintable.Draw), BindingFlags.Public | BindingFlags.Instance);
                 var checkIsFoundMethod = type.GetMethod(nameof(IPaintable.CheckIsFound), BindingFlags.Public | BindingFlags.Instance);
+                var getSelectionFrameMethod = type.GetMethod(nameof(IPaintable.GetSelectionFrame), BindingFlags.Public | BindingFlags.Instance);
 
                 if (onClickMethod != null)
                 {
                     var toolAction = (Action<Graphics, Pen, Point, Point>)Delegate
                         .CreateDelegate(typeof(Action<Graphics, Pen, Point, Point>), obj, onClickMethod);
 
-                    var toolIsFoundFunction = (Func<Point, Point, Point, (Point, Point)>)Delegate
+                    var isFoundFunction = (Func<Point, Point, Point, (Point, Point)>)Delegate
                         .CreateDelegate(typeof(Func<Point, Point, Point, (Point, Point)>), obj, checkIsFoundMethod);
+
+                    var getSelectionFrameFunction = (Func<Point, Point, (Point, Point)>)Delegate
+                         .CreateDelegate(typeof(Func<Point, Point, (Point, Point)>), obj, getSelectionFrameMethod);
 
                     var onClick = new EventHandler((x, y) =>
                     {
                         currentToolType = ToolType.Mods;
                         currentToolName = toolTitle;
                         DrawSomething = toolAction;
-                        CheckIsFound = toolIsFoundFunction;
+                        CheckIsFound = isFoundFunction;
+                        GetSelectionFrame = getSelectionFrameFunction;
                     });
 
                     var newTool = new Tool()
                     {
                         ToolAction = toolAction,
                         ToolName = toolTitle,
-                        ToolIsFoundFunction = toolIsFoundFunction
+                        IsFoundFunction = isFoundFunction,
+                        GetSelectionFrameFunction = getSelectionFrameFunction
                     };
 
                     toolList.Add(newTool);
@@ -219,21 +224,93 @@ namespace VectorPainerPro
 
         private void btnMainColor_Click(object sender, EventArgs e)
         {
-            colorDialog.ShowDialog();
-            newColor = colorDialog.Color;
+            mainColorDialog.ShowDialog();
+            newColor = mainColorDialog.Color;
             pen.Color = newColor;
+
+            (Point startCorner, Point endCorner) frame;
+
+            if (selectedShape != null)
+            {
+                if (selectedShape.ToolType == ToolType.Pencil)
+                {
+                    var minX = selectedShape.Points.Select(x => x.X).Min();
+                    var minY = selectedShape.Points.Select(x => x.Y).Min();
+                    var maxX = selectedShape.Points.Select(x => x.X).Max();
+                    var maxY = selectedShape.Points.Select(x => x.Y).Max();
+                    var framePointStart = new Point(minX, minY);
+                    var framePointEnd = new Point(maxX, maxY);
+
+                    frame = (framePointStart, framePointEnd);
+                }
+                else
+                {
+                    GetSelectionFrame = toolList!.Where(x => x.ToolName == selectedShape.ToolName).Select(x => x.GetSelectionFrameFunction).FirstOrDefault();
+                    var result = GetSelectionFrame?.Invoke(selectedShape.Points[0], selectedShape.Points[1]);
+                    frame = (result!.Value.Item1, result!.Value.Item2);
+                }
+
+                selectedShape.MainColor = newColor.ToArgb();
+                _temp = (Bitmap)pictureBox.Image.Clone();
+
+                pictureBox.Enabled = false;
+                if (fileShapes.Count > 0)
+                {
+                    DrawFromList();
+
+                    SelectionFrame selectionFrame = new SelectionFrame();
+                    selectionFrame.DrawSelectionFrame(frame, _temp, pictureBox);
+                }
+                pictureBox.Enabled = true;
+
+            }
         }
 
         private void btnFillColor_Click(object sender, EventArgs e)
         {
-            colorDialog.ShowDialog();
-            newFillColor = colorDialog.Color;
+            fillColorDialog.ShowDialog();
+            newFillColor = fillColorDialog.Color;
             pen.Color = newFillColor;
         }
 
         private void trackBarLineThickness_Scroll(object sender, EventArgs e)
         {
+            (Point startCorner, Point endCorner) frame;
             pen.Width = trackBarLineThickness.Value;
+
+            if (selectedShape != null)
+            {
+                if (selectedShape.ToolType == ToolType.Pencil)
+                {
+                    var minX = selectedShape.Points.Select(x => x.X).Min();
+                    var minY = selectedShape.Points.Select(x => x.Y).Min();
+                    var maxX = selectedShape.Points.Select(x => x.X).Max();
+                    var maxY = selectedShape.Points.Select(x => x.Y).Max();
+                    var framePointStart = new Point(minX, minY);
+                    var framePointEnd = new Point(maxX, maxY);
+
+                    frame = (framePointStart, framePointEnd);
+                }
+                else
+                {
+                    GetSelectionFrame = toolList!.Where(x => x.ToolName == selectedShape.ToolName).Select(x => x.GetSelectionFrameFunction).FirstOrDefault();
+                    var result = GetSelectionFrame?.Invoke(selectedShape.Points[0], selectedShape.Points[1]);
+                    frame = (result!.Value.Item1, result!.Value.Item2);
+                }
+
+                selectedShape.Width = pen.Width;
+
+                _temp = (Bitmap)pictureBox.Image.Clone();
+                pictureBox.Enabled = false;
+                if (fileShapes.Count > 0)
+                {
+                    DrawFromList();
+
+                    SelectionFrame selectionFrame = new SelectionFrame();
+                    selectionFrame.DrawSelectionFrame(frame, _temp, pictureBox);
+                }
+                pictureBox.Enabled = true;
+            }
         }
 
         #endregion
@@ -249,7 +326,13 @@ namespace VectorPainerPro
             }
             else
             {
-                FindShape(e.Location);
+                selectedShape = FindShape(e.Location);
+                if (selectedShape != null)
+                {
+                    trackBarLineThickness.Value = (int)selectedShape.Width;
+                    mainColorDialog.Color = Color.FromArgb(selectedShape.MainColor);
+                    fillColorDialog.Color = Color.FromArgb(selectedShape.MainColor);
+                }
             }
         }
 
@@ -280,7 +363,7 @@ namespace VectorPainerPro
             {
                 _temp = (Bitmap)pictureBox.Image.Clone();
                 arrayPoints.ResetPoints();
-            }    
+            }
         }
 
         public void CreateShape()
@@ -308,7 +391,7 @@ namespace VectorPainerPro
             foreach (var shape in fileShapes)
             {
                 DrawShape(shape);
-            }    
+            }
         }
 
         public void DrawShape(Shape shape)
@@ -388,6 +471,7 @@ namespace VectorPainerPro
                                 graphics.DrawLines(pen, shape.Points.ToArray());
                                 arrayPoints.Setpoint(point.X, point.Y);
                                 pictureBox.Image = _temp;
+                                _temp = (Bitmap)pictureBox.Image.Clone();
                             }
                         }
                     }
@@ -441,18 +525,16 @@ namespace VectorPainerPro
         #endregion
 
         #region FramesPart
-        private void FindShape(Point point)
+        private Shape? FindShape(Point point)
         {
             var found = false;
-            (Point, Point) frame = (point, point);
+            (Point startCorner, Point endCorner) frame = (point, point);
             Shape foundShape = new Shape();
-            
 
             foreach (var shape in fileShapes)
             {
                 if (shape.ToolType == ToolType.Pencil)
                 {
-                    //found = false;
                     foreach (var shapePoint in shape.Points)
                     {
                         if (Math.Abs(shapePoint.X - point.X) < 10 && Math.Abs(shapePoint.Y - point.Y) < 10)
@@ -468,27 +550,30 @@ namespace VectorPainerPro
                             var framePointEnd = new Point(maxX, maxY);
 
                             frame = (framePointStart, framePointEnd);
+                            foundShape = shape;
                             break;
                         }
                     }
-                }   
+                }
                 else
                 {
-                    CheckIsFound = toolList!.Where(x => x.ToolName == shape.ToolName).Select(x => x.ToolIsFoundFunction).FirstOrDefault();
+                    CheckIsFound = toolList!.Where(x => x.ToolName == shape.ToolName).Select(x => x.IsFoundFunction).FirstOrDefault();
                     var result = (CheckIsFound?.Invoke(shape.Points[0], shape.Points[1], point));
-
                     frame = (result!.Value.Item1, result!.Value.Item2);
-                    found = frame.Item1 != point || frame.Item2 != point;
+ 
+                    found = frame.startCorner != point || frame.endCorner != point;
                     if (found)
                     {
+                        foundShape = shape;
                         break;
                     }
                 }
             }
             if (found)
             {
-                DrawSelectionFrame(frame);
-                found = false;
+                SelectionFrame selectionFrame = new SelectionFrame();
+                selectionFrame.DrawSelectionFrame(frame, _temp, pictureBox);
+                return foundShape;
             }
             else
             {
@@ -496,62 +581,9 @@ namespace VectorPainerPro
                 {
                     pictureBox.Image?.Dispose();
                     pictureBox.Image = (Bitmap)bitmap.Clone();
-                    found = false;
+                    return null;
                 }
             }
-        }
-
-        private void DrawSelectionFrame((Point, Point) frame)
-        {
-
-            var minX = frame.Item1.X;
-            var minY = frame.Item1.Y;
-            var maxX = frame.Item2.X;
-            var maxY = frame.Item2.Y;
-
-            int width = Math.Abs(frame.Item2.X - frame.Item1.X);
-            int height = Math.Abs(frame.Item2.Y - frame.Item1.Y);
-
-            var _selection = new Bitmap(_temp);
-
-            using (var bitmap = new Bitmap(_selection, pictureBox.Width, pictureBox.Height))
-            {
-                using (var graphics = Graphics.FromImage(bitmap))
-                {
-                    graphics.SmoothingMode = SmoothingMode.AntiAlias;
-
-                    Pen pen = new(Color.Black, 1);
-                    SolidBrush blueBrush = new SolidBrush(Color.Black);
-
-                    Rectangle rect11 = new Rectangle(minX - 6, minY - 6, 6, 6);
-                    Rectangle rect12 = new Rectangle(minX - 6 + (width) / 2, minY - 6, 6, 6);
-                    Rectangle rect13 = new Rectangle(maxX, minY - 6, 6, 6);
-
-                    Rectangle rect21 = new Rectangle(minX - 6, minY + (height) / 2, 6, 6);
-                    Rectangle rect23 = new Rectangle(maxX, minY + (height) / 2, 6, 6);
-
-                    Rectangle rect31 = new Rectangle(minX - 6, maxY, 6, 6);
-                    Rectangle rect32 = new Rectangle(minX - 6 + (width) / 2, maxY, 6, 6);
-                    Rectangle rect33 = new Rectangle(maxX, maxY, 6, 6);
-
-                    graphics.FillRectangle(blueBrush, rect11);
-                    graphics.FillRectangle(blueBrush, rect12);
-                    graphics.FillRectangle(blueBrush, rect13);
-
-                    graphics.FillRectangle(blueBrush, rect21);
-                    graphics.FillRectangle(blueBrush, rect23);
-
-                    graphics.FillRectangle(blueBrush, rect31);
-                    graphics.FillRectangle(blueBrush, rect32);
-                    graphics.FillRectangle(blueBrush, rect33);
-
-                    pictureBox.Image?.Dispose();
-                    pictureBox.Image = (Bitmap)bitmap.Clone();
-                }
-            }
-
-
-
         }
         #endregion
 
