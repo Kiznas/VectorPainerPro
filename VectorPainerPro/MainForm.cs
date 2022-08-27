@@ -596,6 +596,7 @@ namespace VectorPainerPro
         ToolParams currentParams;
         int currentAnimationIndex;
         int currentRepeatIndex;
+        float angle = 0;
 
         private void buttonPlay_Click(object sender, EventArgs e)
         {
@@ -632,11 +633,7 @@ namespace VectorPainerPro
                             {
                                 using (var graphics = Graphics.FromImage(bitmap))
                                 {
-                                    graphics.DrawEllipse(pen,
-                                       (pictureBox.Width / 2) - 50,
-                                       (pictureBox.Height / 2) - 50,
-                                       100,
-                                       100);
+                                    additionalFigures(pen, graphics);
 
                                     graphics.DrawLine(
                                        pen,
@@ -666,6 +663,21 @@ namespace VectorPainerPro
                     currentParams = (ToolParams)figureAnimation.ToolParams.Clone();
                 }
             } while (cycled == true);
+        }
+
+        private void additionalFigures(Pen pen, Graphics graphics)
+        {
+            float bw2 = pictureBox.Width / 2;
+            float bh2 = pictureBox.Height / 2;
+            graphics.TranslateTransform(bw2, bh2);
+            graphics.RotateTransform(angle+=36);
+            graphics.TranslateTransform(-bw2, -bh2);
+            graphics.DrawRectangle(pen,
+                                       (pictureBox.Width / 2) -50,
+                                       (pictureBox.Height / 2) -50,
+                                       100,
+                                       100);
+            graphics.ResetTransform();
         }
 
         private void buttonStop_Click(object sender, EventArgs e)
