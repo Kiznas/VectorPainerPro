@@ -46,9 +46,9 @@ namespace VectorPainerPro
             this.openDllDialog = new System.Windows.Forms.OpenFileDialog();
             this.panelSettings = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.buttonRepeat = new System.Windows.Forms.Button();
+            this.buttonStop = new System.Windows.Forms.Button();
+            this.buttonPlay = new System.Windows.Forms.Button();
             this.labelMainColor = new System.Windows.Forms.Label();
             this.labelFillColor = new System.Windows.Forms.Label();
             this.btnFillColor = new System.Windows.Forms.Button();
@@ -57,10 +57,10 @@ namespace VectorPainerPro
             this.trackBarLineThickness = new System.Windows.Forms.TrackBar();
             this.pictureBox = new System.Windows.Forms.PictureBox();
             this.panelPictureBox = new System.Windows.Forms.Panel();
+            this.buttonCreateAnimation = new System.Windows.Forms.Button();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.statusLabelCanvaSize = new System.Windows.Forms.ToolStripStatusLabel();
             this.panelMain = new System.Windows.Forms.Panel();
-            this.button4 = new System.Windows.Forms.Button();
             this.toolStripTools.SuspendLayout();
             this.panelSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarLineThickness)).BeginInit();
@@ -193,9 +193,9 @@ namespace VectorPainerPro
             // panelSettings
             // 
             this.panelSettings.Controls.Add(this.label1);
-            this.panelSettings.Controls.Add(this.button3);
-            this.panelSettings.Controls.Add(this.button2);
-            this.panelSettings.Controls.Add(this.button1);
+            this.panelSettings.Controls.Add(this.buttonRepeat);
+            this.panelSettings.Controls.Add(this.buttonStop);
+            this.panelSettings.Controls.Add(this.buttonPlay);
             this.panelSettings.Controls.Add(this.labelMainColor);
             this.panelSettings.Controls.Add(this.labelFillColor);
             this.panelSettings.Controls.Add(this.btnFillColor);
@@ -219,41 +219,41 @@ namespace VectorPainerPro
             this.label1.Text = "Animation\r\ncontrols\r\n";
             this.label1.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             // 
-            // button3
+            // buttonRepeat
             // 
-            this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.button3.ForeColor = System.Drawing.SystemColors.Control;
-            this.button3.Image = ((System.Drawing.Image)(resources.GetObject("button3.Image")));
-            this.button3.Location = new System.Drawing.Point(2, 461);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(35, 35);
-            this.button3.TabIndex = 14;
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
+            this.buttonRepeat.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.buttonRepeat.ForeColor = System.Drawing.SystemColors.Control;
+            this.buttonRepeat.Image = ((System.Drawing.Image)(resources.GetObject("buttonRepeat.Image")));
+            this.buttonRepeat.Location = new System.Drawing.Point(6, 461);
+            this.buttonRepeat.Name = "buttonRepeat";
+            this.buttonRepeat.Size = new System.Drawing.Size(35, 35);
+            this.buttonRepeat.TabIndex = 14;
+            this.buttonRepeat.UseVisualStyleBackColor = true;
+            this.buttonRepeat.Click += new System.EventHandler(this.buttonRepeat_Click);
             // 
-            // button2
+            // buttonStop
             // 
-            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.button2.ForeColor = System.Drawing.SystemColors.Control;
-            this.button2.Image = ((System.Drawing.Image)(resources.GetObject("button2.Image")));
-            this.button2.Location = new System.Drawing.Point(0, 420);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(35, 35);
-            this.button2.TabIndex = 13;
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.buttonStop.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.buttonStop.ForeColor = System.Drawing.SystemColors.Control;
+            this.buttonStop.Image = ((System.Drawing.Image)(resources.GetObject("buttonStop.Image")));
+            this.buttonStop.Location = new System.Drawing.Point(6, 420);
+            this.buttonStop.Name = "buttonStop";
+            this.buttonStop.Size = new System.Drawing.Size(35, 35);
+            this.buttonStop.TabIndex = 13;
+            this.buttonStop.UseVisualStyleBackColor = true;
+            this.buttonStop.Click += new System.EventHandler(this.buttonStop_Click);
             // 
-            // button1
+            // buttonPlay
             // 
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.button1.ForeColor = System.Drawing.SystemColors.Control;
-            this.button1.Image = ((System.Drawing.Image)(resources.GetObject("button1.Image")));
-            this.button1.Location = new System.Drawing.Point(2, 379);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(33, 35);
-            this.button1.TabIndex = 12;
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.buttonPlay.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.buttonPlay.ForeColor = System.Drawing.SystemColors.Control;
+            this.buttonPlay.Image = ((System.Drawing.Image)(resources.GetObject("buttonPlay.Image")));
+            this.buttonPlay.Location = new System.Drawing.Point(6, 381);
+            this.buttonPlay.Name = "buttonPlay";
+            this.buttonPlay.Size = new System.Drawing.Size(35, 35);
+            this.buttonPlay.TabIndex = 12;
+            this.buttonPlay.UseVisualStyleBackColor = true;
+            this.buttonPlay.Click += new System.EventHandler(this.buttonPlay_Click);
             // 
             // labelMainColor
             // 
@@ -344,7 +344,7 @@ namespace VectorPainerPro
             // panelPictureBox
             // 
             this.panelPictureBox.AutoScroll = true;
-            this.panelPictureBox.Controls.Add(this.button4);
+            this.panelPictureBox.Controls.Add(this.buttonCreateAnimation);
             this.panelPictureBox.Controls.Add(this.pictureBox);
             this.panelPictureBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelPictureBox.Location = new System.Drawing.Point(0, 0);
@@ -352,6 +352,16 @@ namespace VectorPainerPro
             this.panelPictureBox.Name = "panelPictureBox";
             this.panelPictureBox.Size = new System.Drawing.Size(870, 499);
             this.panelPictureBox.TabIndex = 9;
+            // 
+            // buttonCreateAnimation
+            // 
+            this.buttonCreateAnimation.Location = new System.Drawing.Point(715, 420);
+            this.buttonCreateAnimation.Name = "buttonCreateAnimation";
+            this.buttonCreateAnimation.Size = new System.Drawing.Size(108, 23);
+            this.buttonCreateAnimation.TabIndex = 9;
+            this.buttonCreateAnimation.Text = "Add new anim";
+            this.buttonCreateAnimation.UseVisualStyleBackColor = true;
+            this.buttonCreateAnimation.Click += new System.EventHandler(this.buttonCreateAnimation_Click);
             // 
             // statusStrip
             // 
@@ -380,16 +390,6 @@ namespace VectorPainerPro
             this.panelMain.Name = "panelMain";
             this.panelMain.Size = new System.Drawing.Size(945, 499);
             this.panelMain.TabIndex = 11;
-            // 
-            // button4
-            // 
-            this.button4.Location = new System.Drawing.Point(715, 420);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(108, 23);
-            this.button4.TabIndex = 9;
-            this.button4.Text = "Add new anim";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // MainForm
             // 
@@ -444,10 +444,10 @@ namespace VectorPainerPro
         private System.Windows.Forms.ToolStripButton btnLoadTool;
         private System.Windows.Forms.ToolStripButton btnSave;
         private System.Windows.Forms.ToolStripButton btnSelect;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button buttonRepeat;
+        private System.Windows.Forms.Button buttonStop;
+        private System.Windows.Forms.Button buttonPlay;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button buttonCreateAnimation;
     }
 }

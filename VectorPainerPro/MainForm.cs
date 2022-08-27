@@ -591,12 +591,13 @@ namespace VectorPainerPro
         #region Animation
         CancellationTokenSource cancelationTokenSource;
         bool wasStopped;
+        bool cycled;
         FigureAnimation figureAnimation;
         ToolParams currentParams;
         int currentAnimationIndex;
         int currentRepeatIndex;
 
-        private void button1_Click(object sender, EventArgs e)
+        private void buttonPlay_Click(object sender, EventArgs e)
         {
             if (!wasStopped)
             {
@@ -658,15 +659,29 @@ namespace VectorPainerPro
                     currentAnimationIndex = 0;
                     currentParams = (ToolParams)figureAnimation.ToolParams.Clone();
                 }
-            } while (true);
+            } while (cycled == true);
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void buttonStop_Click(object sender, EventArgs e)
         {
             cancelationTokenSource.Cancel();
         }
 
-        private void button4_Click(object sender, EventArgs e)
+        private void buttonRepeat_Click(object sender, EventArgs e)
+        {
+            if(cycled == true)
+            {
+                cycled = false;
+                buttonRepeat.BackColor = Color.Red;
+            }
+            else
+            {
+                cycled = true;
+                buttonRepeat.BackColor = Color.Green;
+            }
+        }
+
+        private void buttonCreateAnimation_Click(object sender, EventArgs e)
         {
             var random = new Random();
             var size = 100;
@@ -714,11 +729,6 @@ namespace VectorPainerPro
         private void SetStatusStripInfo()
         {
             statusLabelCanvaSize.Text = "Image Size " + pictureBox.Width + " : " + pictureBox.Height;
-        }
-
-        private void button3_Click(object sender, EventArgs e)
-        {
-
         }
     }
 }
