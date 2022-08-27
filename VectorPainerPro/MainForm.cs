@@ -602,7 +602,7 @@ namespace VectorPainerPro
             if (!wasStopped)
             {
                 using (StreamReader sr = new StreamReader(
-                    @"C:\Users\Klimt\AppData\Local\Temp\tmpD076.tmp"))
+                    @"C:\Users\Klimt\source\repos\ClockAnim.json"))
                 {
                     figureAnimation = JsonSerializer.Deserialize<FigureAnimation>(sr.ReadToEnd());
                 }
