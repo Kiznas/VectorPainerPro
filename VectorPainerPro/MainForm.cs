@@ -602,7 +602,7 @@ namespace VectorPainerPro
             if (!wasStopped)
             {
                 using (StreamReader sr = new StreamReader(
-                    @"C:\Users\Klimt\AppData\Local\Temp\tmpC8EC.tmp"))
+                    @"C:\Users\Klimt\AppData\Local\Temp\tmpD076.tmp"))
                 {
                     figureAnimation = JsonSerializer.Deserialize<FigureAnimation>(sr.ReadToEnd());
                 }
@@ -632,7 +632,13 @@ namespace VectorPainerPro
                             {
                                 using (var graphics = Graphics.FromImage(bitmap))
                                 {
-                                    graphics.DrawRectangle(
+                                    graphics.DrawEllipse(pen,
+                                       (pictureBox.Width / 2) - 50,
+                                       (pictureBox.Height / 2) - 50,
+                                       100,
+                                       100);
+
+                                    graphics.DrawLine(
                                        pen,
                                        currentParams.StartX,
                                        currentParams.StartY,
@@ -684,23 +690,40 @@ namespace VectorPainerPro
         private void buttonCreateAnimation_Click(object sender, EventArgs e)
         {
             var random = new Random();
-            var size = 100;
             var widthCenter = pictureBox.Width / 2;
             var heightCenter = pictureBox.Height / 2;
             var animationActions = new List<AnimationAction>();
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 1; i++)
             {
                 animationActions.Add(new AnimationAction
                 {
-                    Count = (short)random.Next(10, 100),
-                    DeltaStartX = (short)random.Next(-2, 2),
-                    DeltaStartY = (short)random.Next(-2, 2)
+                    Count = 50,
+                    DeltaEndX = 1,
+                    DeltaEndY = 1
+                });
+                animationActions.Add(new AnimationAction
+                {
+                    Count = 50,
+                    DeltaEndX = -1,
+                    DeltaEndY = 1
+                });
+                animationActions.Add(new AnimationAction
+                {
+                    Count = 50,
+                    DeltaEndX = -1,
+                    DeltaEndY = -1
+                });
+                animationActions.Add(new AnimationAction
+                {
+                    Count = 50,
+                    DeltaEndX = 1,
+                    DeltaEndY = -1
                 });
             }
 
             var animation = new FigureAnimation
             {
-                ToolTitle = nameof(Rectangle),
+                ToolTitle = nameof(Graphics.DrawRectangle),
                 ToolParams = new ToolParams
                 {
                     Color = Color.FromArgb(
@@ -708,10 +731,10 @@ namespace VectorPainerPro
                         random.Next(0, 255),
                         random.Next(0, 255)).ToArgb(),
                     LineWidth = 2,
-                    StartX = widthCenter - size,
-                    EndX = heightCenter - size,
-                    StartY = size,
-                    EndY = size
+                    StartX = widthCenter,
+                    EndX = widthCenter,
+                    StartY = heightCenter,
+                    EndY = heightCenter - 50
                 },
                 AnimationActions = animationActions
             };
