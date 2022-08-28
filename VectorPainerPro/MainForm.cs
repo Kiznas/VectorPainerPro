@@ -685,6 +685,7 @@ namespace VectorPainerPro
         int currentRepeatIndex;
         float angle = 0;
         string stream;
+
         private void button_Load_Click(object sender, EventArgs e)
         {
             OpenFileDialog theDialog = new OpenFileDialog();
@@ -700,19 +701,22 @@ namespace VectorPainerPro
 
         private void buttonPlay_Click(object sender, EventArgs e)
         {
-            if (!wasStopped)
-            {
-                using (StreamReader sr = new StreamReader(stream))
+            if (stream != null)
+            { 
+                if (!wasStopped)
                 {
-                    figureAnimation = JsonSerializer.Deserialize<FigureAnimation>(sr.ReadToEnd());
+                    using (StreamReader sr = new StreamReader(stream))
+                    {
+                        figureAnimation = JsonSerializer.Deserialize<FigureAnimation>(sr.ReadToEnd());
+                    }
+                    currentParams = (ToolParams)figureAnimation.ToolParams.Clone();
+                    currentAnimationIndex = 0;
+                    currentRepeatIndex = 0;
                 }
-                currentParams = (ToolParams)figureAnimation.ToolParams.Clone();
-                currentAnimationIndex = 0;
-                currentRepeatIndex = 0;
+                cancelationTokenSource = new CancellationTokenSource();
+                Thread thread = new Thread(() => Test(cancelationTokenSource.Token));
+                thread.Start();
             }
-            cancelationTokenSource = new CancellationTokenSource();
-            Thread thread = new Thread(() => Test(cancelationTokenSource.Token));
-            thread.Start();
         }
 
         private void Test(CancellationToken cancellationToken)
@@ -779,12 +783,15 @@ namespace VectorPainerPro
 
         private void buttonStop_Click(object sender, EventArgs e)
         {
-            cancelationTokenSource.Cancel();
+            if (cancelationTokenSource != null)
+            {
+                cancelationTokenSource.Cancel();
+            }
         }
 
         private void buttonRepeat_Click(object sender, EventArgs e)
         {
-            if(cycled == true)
+            if (cycled == true)
             {
                 cycled = false;
                 buttonRepeat.BackColor = Color.Red;
