@@ -92,6 +92,7 @@ namespace VectorPainerPro
             this.toolStripTools.Size = new System.Drawing.Size(1096, 27);
             this.toolStripTools.TabIndex = 3;
             this.toolStripTools.Text = "toolStrip1";
+            this.toolStripTools.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.toolStripTools_ItemClicked);
             // 
             // btnLoadTool
             // 
@@ -170,21 +171,25 @@ namespace VectorPainerPro
             // 
             // btnSelect
             // 
+            this.btnSelect.CheckOnClick = true;
             this.btnSelect.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.btnSelect.Image = ((System.Drawing.Image)(resources.GetObject("btnSelect.Image")));
             this.btnSelect.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnSelect.Name = "btnSelect";
             this.btnSelect.Size = new System.Drawing.Size(24, 24);
+            this.btnSelect.Tag = "";
             this.btnSelect.Text = "Select";
             this.btnSelect.Click += new System.EventHandler(this.btnSelect_Click);
             // 
             // btnPencil
             // 
+            this.btnPencil.CheckOnClick = true;
             this.btnPencil.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.btnPencil.Image = ((System.Drawing.Image)(resources.GetObject("btnPencil.Image")));
             this.btnPencil.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnPencil.Name = "btnPencil";
             this.btnPencil.Size = new System.Drawing.Size(24, 24);
+            this.btnPencil.Tag = "";
             this.btnPencil.Text = "Pencil Tool";
             this.btnPencil.Click += new System.EventHandler(this.btnPencil_Click);
             // 

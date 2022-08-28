@@ -149,6 +149,7 @@ namespace VectorPainerPro
                     ToolStripButton btnTool = new ToolStripButton(toolTitle, icon, onClick, toolTitle);
                     btnTool.DisplayStyle = ToolStripItemDisplayStyle.Image;
                     btnTool.Text = toolTitle;
+                    btnTool.CheckOnClick = true;
 
                     toolStripTools.Items.Add(btnTool);
                 }
@@ -272,7 +273,6 @@ namespace VectorPainerPro
                     selectionFrame.DrawSelectionFrame(frame, _temp, pictureBox);
                 }
                 pictureBox.Enabled = true;
-
             }
         }
 
@@ -281,6 +281,43 @@ namespace VectorPainerPro
             fillColorDialog.ShowDialog();
             newFillColor = fillColorDialog.Color;
             brush.Color = newFillColor;
+
+            (Point startCorner, Point endCorner) frame;
+
+            if (selectedShape != null)
+            {
+                if (selectedShape.ToolType == ToolType.Pencil)
+                {
+                    var minX = selectedShape.Points.Select(x => x.X).Min();
+                    var minY = selectedShape.Points.Select(x => x.Y).Min();
+                    var maxX = selectedShape.Points.Select(x => x.X).Max();
+                    var maxY = selectedShape.Points.Select(x => x.Y).Max();
+                    var framePointStart = new Point(minX, minY);
+                    var framePointEnd = new Point(maxX, maxY);
+
+                    frame = (framePointStart, framePointEnd);
+                }
+                else
+                {
+                    GetSelectionFrame = toolList!.Where(x => x.ToolName == selectedShape.ToolName).Select(x => x.GetSelectionFrameFunction).FirstOrDefault();
+                    var result = GetSelectionFrame?.Invoke(selectedShape.Points[0], selectedShape.Points[1]);
+                    frame = (result!.Value.Item1, result!.Value.Item2);
+                }
+
+                selectedShape.FillColor = newFillColor.ToArgb();
+                selectedShape.Filled = FillCheckBox.Checked;
+                _temp = (Bitmap)pictureBox.Image.Clone();
+
+                pictureBox.Enabled = false;
+                if (fileShapes.Count > 0)
+                {
+                    DrawFromList();
+
+                    SelectionFrame selectionFrame = new SelectionFrame();
+                    selectionFrame.DrawSelectionFrame(frame, _temp, pictureBox);
+                }
+                pictureBox.Enabled = true;
+            }
         }
 
         private void trackBarLineThickness_Scroll(object sender, EventArgs e)
@@ -880,6 +917,21 @@ namespace VectorPainerPro
                     fileShapes.Remove(selectedShape);
                     DrawFromList();
                     pictureBox.Enabled = true;
+                }
+            }
+        }
+
+        private void toolStripTools_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            foreach (var item in toolStripTools.Items)
+            {
+                if (item.GetType() == typeof(ToolStripButton))
+                    {
+                    if (!item.Equals(e.ClickedItem))
+                    {
+                        ToolStripButton btn = (ToolStripButton)item;
+                        btn.Checked = false;
+                    }
                 }
             }
         }
