@@ -31,6 +31,7 @@ namespace VectorPainerPro
         private Point startPoint;
 
         private Action<Graphics, Pen, Point, Point>? DrawSomething;
+        private Action<Graphics, Brush, Point, Point>? fillSomething;
         private Func<Point, Point, Point, (Point, Point)>? CheckIsFound;
         private Func<Point, Point, (Point, Point)>? GetSelectionFrame;
 
@@ -41,6 +42,7 @@ namespace VectorPainerPro
         Color newColor;
         Color newFillColor;
         Pen pen = new Pen(Color.Black, 1);
+        SolidBrush brush = new SolidBrush(Color.Empty);
 
         public MainForm()
         {
@@ -105,6 +107,7 @@ namespace VectorPainerPro
                 var toolTitle = GetPropertyFromType<string>(type, nameof(IPaintable.ToolTitle), obj);
                 var icon = GetPropertyFromType<Bitmap>(type, nameof(IPaintable.Icon), obj);
                 var onClickMethod = type.GetMethod(nameof(IPaintable.Draw), BindingFlags.Public | BindingFlags.Instance);
+                var onClickMethod2 = type.GetMethod(nameof(IPaintable.Fill), BindingFlags.Public | BindingFlags.Instance);
                 var checkIsFoundMethod = type.GetMethod(nameof(IPaintable.CheckIsFound), BindingFlags.Public | BindingFlags.Instance);
                 var getSelectionFrameMethod = type.GetMethod(nameof(IPaintable.GetSelectionFrame), BindingFlags.Public | BindingFlags.Instance);
 
@@ -112,6 +115,9 @@ namespace VectorPainerPro
                 {
                     var toolAction = (Action<Graphics, Pen, Point, Point>)Delegate
                         .CreateDelegate(typeof(Action<Graphics, Pen, Point, Point>), obj, onClickMethod);
+
+                    var toolAction2 = (Action<Graphics, Brush, Point, Point>)Delegate
+                        .CreateDelegate(typeof(Action<Graphics, Brush, Point, Point>), obj, onClickMethod2);
 
                     var isFoundFunction = (Func<Point, Point, Point, (Point, Point)>)Delegate
                         .CreateDelegate(typeof(Func<Point, Point, Point, (Point, Point)>), obj, checkIsFoundMethod);
@@ -124,6 +130,7 @@ namespace VectorPainerPro
                         currentToolType = ToolType.Mods;
                         currentToolName = toolTitle;
                         DrawSomething = toolAction;
+                        fillSomething = toolAction2;
                         CheckIsFound = isFoundFunction;
                         GetSelectionFrame = getSelectionFrameFunction;
                     });
@@ -131,6 +138,7 @@ namespace VectorPainerPro
                     var newTool = new Tool()
                     {
                         ToolAction = toolAction,
+                        ToolAction2 = toolAction2,
                         ToolName = toolTitle,
                         IsFoundFunction = isFoundFunction,
                         GetSelectionFrameFunction = getSelectionFrameFunction
@@ -271,7 +279,7 @@ namespace VectorPainerPro
         {
             fillColorDialog.ShowDialog();
             newFillColor = fillColorDialog.Color;
-            pen.Color = newFillColor;
+            brush.Color = newFillColor;
         }
 
         private void trackBarLineThickness_Scroll(object sender, EventArgs e)
@@ -376,7 +384,10 @@ namespace VectorPainerPro
                 ToolType = currentToolType,
                 Points = new List<Point>(),
                 MainColor = pen.Color.ToArgb(),
+                FillColor = brush.Color.ToArgb(),
+                Filled = FillCheckBox.Checked,
                 Width = pen.Width
+                
             };
 
             currentShape = newShape;
@@ -428,8 +439,15 @@ namespace VectorPainerPro
                         pen.LineJoin = LineJoin.Miter;
 
                         var point = shape.Points!.Last();
-
-                        DrawSomething?.Invoke(graphics, pen, startPoint, point);
+                        if (FillCheckBox.Checked == true)
+                        {
+                            fillSomething?.Invoke(graphics, brush, startPoint, point);
+                            DrawSomething?.Invoke(graphics, pen, startPoint, point);
+                        }
+                        else
+                        {
+                            DrawSomething?.Invoke(graphics, pen, startPoint, point);
+                        }
                         pictureBox.Image?.Dispose();
                         pictureBox.Image = (Bitmap)bitmap.Clone();
                     }
@@ -485,10 +503,19 @@ namespace VectorPainerPro
                     using (var graphics = Graphics.FromImage(bitmap))
                     {
                         Pen pen = new(Color.FromArgb(shape.MainColor), shape.Width);
+                        SolidBrush brush = new(Color.FromArgb(shape.FillColor));
                         currentToolName = shape.ToolName;
                         DrawSomething = toolList!.Where(x => x.ToolName == currentToolName).Select(x => x.ToolAction).FirstOrDefault();
-
-                        DrawSomething?.Invoke(graphics, pen, shape.Points.First(), shape.Points.Last());
+                        fillSomething = toolList!.Where(x => x.ToolName == currentToolName).Select(x => x.ToolAction2).FirstOrDefault();
+                        if (shape.Filled == true)
+                        {
+                            DrawSomething?.Invoke(graphics, pen, shape.Points.First(), shape.Points.Last());
+                            fillSomething?.Invoke(graphics, brush, shape.Points.First(), shape.Points.Last());
+                        }
+                        else
+                        {
+                            DrawSomething?.Invoke(graphics, pen, shape.Points.First(), shape.Points.Last());
+                        }
                         pictureBox.Image?.Dispose();
                         pictureBox.Image = (Bitmap)bitmap.Clone();
                         _temp = (Bitmap)pictureBox.Image.Clone();

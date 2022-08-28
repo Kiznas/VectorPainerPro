@@ -56,7 +56,6 @@ namespace VectorModderPack
 
         public void Draw(Graphics graphics, Pen pen, Point start, Point end)
         {
-
             int startX = start.X;
             int startY = start.Y;
             int endX = end.X;
@@ -80,7 +79,25 @@ namespace VectorModderPack
 
         public void Fill(Graphics graphics, Brush brush, Point start, Point end)
         {
-            throw new NotImplementedException();
+            int startX = start.X;
+            int startY = start.Y;
+            int endX = end.X;
+            int endY = end.Y;
+
+            if (startX > endX)
+            {
+                Swap(ref startX, ref endX);
+            }
+
+            if (startY > endY)
+            {
+                Swap(ref startY, ref endY);
+            }
+
+            int width = endX - startX;
+            int height = endY - startY;
+
+            graphics.FillEllipse(brush, startX, startY, width, width);
         }
     }
 }

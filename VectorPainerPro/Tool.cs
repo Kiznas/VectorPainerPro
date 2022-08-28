@@ -8,6 +8,7 @@ namespace VectorPainerPro
     {
         public string ToolName { get; set; } = string.Empty;
         public Action<Graphics, Pen, Point, Point>? ToolAction { get; set; }
+        public Action<Graphics, Brush, Point, Point>? ToolAction2 { get; set; }
         public Func<Point, Point, Point, (Point, Point)>? IsFoundFunction { get; set; }
         public Func<Point, Point, (Point, Point)>? GetSelectionFrameFunction { get; set; }
 }

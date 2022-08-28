@@ -45,6 +45,8 @@ namespace VectorPainerPro
             this.btnPencil = new System.Windows.Forms.ToolStripButton();
             this.openDllDialog = new System.Windows.Forms.OpenFileDialog();
             this.panelSettings = new System.Windows.Forms.Panel();
+            this.buttonCreateAnimation = new System.Windows.Forms.Button();
+            this.button_Load = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.buttonRepeat = new System.Windows.Forms.Button();
             this.buttonStop = new System.Windows.Forms.Button();
@@ -57,11 +59,10 @@ namespace VectorPainerPro
             this.trackBarLineThickness = new System.Windows.Forms.TrackBar();
             this.pictureBox = new System.Windows.Forms.PictureBox();
             this.panelPictureBox = new System.Windows.Forms.Panel();
-            this.buttonCreateAnimation = new System.Windows.Forms.Button();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.statusLabelCanvaSize = new System.Windows.Forms.ToolStripStatusLabel();
             this.panelMain = new System.Windows.Forms.Panel();
-            this.button_Load = new System.Windows.Forms.Button();
+            this.FillCheckBox = new System.Windows.Forms.CheckBox();
             this.toolStripTools.SuspendLayout();
             this.panelSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarLineThickness)).BeginInit();
@@ -193,6 +194,7 @@ namespace VectorPainerPro
             // 
             // panelSettings
             // 
+            this.panelSettings.Controls.Add(this.FillCheckBox);
             this.panelSettings.Controls.Add(this.buttonCreateAnimation);
             this.panelSettings.Controls.Add(this.button_Load);
             this.panelSettings.Controls.Add(this.label1);
@@ -211,6 +213,26 @@ namespace VectorPainerPro
             this.panelSettings.Name = "panelSettings";
             this.panelSettings.Size = new System.Drawing.Size(82, 499);
             this.panelSettings.TabIndex = 7;
+            // 
+            // buttonCreateAnimation
+            // 
+            this.buttonCreateAnimation.Location = new System.Drawing.Point(2, 441);
+            this.buttonCreateAnimation.Name = "buttonCreateAnimation";
+            this.buttonCreateAnimation.Size = new System.Drawing.Size(79, 37);
+            this.buttonCreateAnimation.TabIndex = 9;
+            this.buttonCreateAnimation.Text = "Add new anim";
+            this.buttonCreateAnimation.UseVisualStyleBackColor = true;
+            this.buttonCreateAnimation.Click += new System.EventHandler(this.buttonCreateAnimation_Click);
+            // 
+            // button_Load
+            // 
+            this.button_Load.Location = new System.Drawing.Point(4, 412);
+            this.button_Load.Name = "button_Load";
+            this.button_Load.Size = new System.Drawing.Size(75, 23);
+            this.button_Load.TabIndex = 16;
+            this.button_Load.Text = "Load anim";
+            this.button_Load.UseVisualStyleBackColor = true;
+            this.button_Load.Click += new System.EventHandler(this.button_Load_Click);
             // 
             // label1
             // 
@@ -355,16 +377,6 @@ namespace VectorPainerPro
             this.panelPictureBox.Size = new System.Drawing.Size(863, 499);
             this.panelPictureBox.TabIndex = 9;
             // 
-            // buttonCreateAnimation
-            // 
-            this.buttonCreateAnimation.Location = new System.Drawing.Point(2, 441);
-            this.buttonCreateAnimation.Name = "buttonCreateAnimation";
-            this.buttonCreateAnimation.Size = new System.Drawing.Size(79, 37);
-            this.buttonCreateAnimation.TabIndex = 9;
-            this.buttonCreateAnimation.Text = "Add new anim";
-            this.buttonCreateAnimation.UseVisualStyleBackColor = true;
-            this.buttonCreateAnimation.Click += new System.EventHandler(this.buttonCreateAnimation_Click);
-            // 
             // statusStrip
             // 
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -393,15 +405,15 @@ namespace VectorPainerPro
             this.panelMain.Size = new System.Drawing.Size(945, 499);
             this.panelMain.TabIndex = 11;
             // 
-            // button_Load
+            // FillCheckBox
             // 
-            this.button_Load.Location = new System.Drawing.Point(4, 412);
-            this.button_Load.Name = "button_Load";
-            this.button_Load.Size = new System.Drawing.Size(75, 23);
-            this.button_Load.TabIndex = 16;
-            this.button_Load.Text = "Load anim";
-            this.button_Load.UseVisualStyleBackColor = true;
-            this.button_Load.Click += new System.EventHandler(this.button_Load_Click);
+            this.FillCheckBox.AutoSize = true;
+            this.FillCheckBox.Location = new System.Drawing.Point(16, 83);
+            this.FillCheckBox.Name = "FillCheckBox";
+            this.FillCheckBox.Size = new System.Drawing.Size(60, 16);
+            this.FillCheckBox.TabIndex = 17;
+            this.FillCheckBox.Text = "Fill ?";
+            this.FillCheckBox.UseVisualStyleBackColor = true;
             // 
             // MainForm
             // 
@@ -462,5 +474,6 @@ namespace VectorPainerPro
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button buttonCreateAnimation;
         private System.Windows.Forms.Button button_Load;
+        private System.Windows.Forms.CheckBox FillCheckBox;
     }
 }

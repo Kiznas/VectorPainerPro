@@ -14,6 +14,7 @@ namespace VectorPainerPro
         public List<Point>? Points { get; set; }
         public int MainColor { get; set; }
         public int FillColor { get; set; }
+        public bool Filled { get; set; }
         public float Width { get; set; }
     }
 }

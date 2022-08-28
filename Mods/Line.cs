@@ -100,7 +100,6 @@ namespace Mods
 
             public void Fill(Graphics graphics, Brush brush, Point start, Point end)
             {
-                throw new NotImplementedException();
             }
         }
     }
