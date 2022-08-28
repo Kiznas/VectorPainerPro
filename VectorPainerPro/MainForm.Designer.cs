@@ -45,6 +45,7 @@ namespace VectorPainerPro
             this.btnPencil = new System.Windows.Forms.ToolStripButton();
             this.openDllDialog = new System.Windows.Forms.OpenFileDialog();
             this.panelSettings = new System.Windows.Forms.Panel();
+            this.FillCheckBox = new System.Windows.Forms.CheckBox();
             this.buttonCreateAnimation = new System.Windows.Forms.Button();
             this.button_Load = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
@@ -62,7 +63,6 @@ namespace VectorPainerPro
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.statusLabelCanvaSize = new System.Windows.Forms.ToolStripStatusLabel();
             this.panelMain = new System.Windows.Forms.Panel();
-            this.FillCheckBox = new System.Windows.Forms.CheckBox();
             this.toolStripTools.SuspendLayout();
             this.panelSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarLineThickness)).BeginInit();
@@ -213,6 +213,16 @@ namespace VectorPainerPro
             this.panelSettings.Name = "panelSettings";
             this.panelSettings.Size = new System.Drawing.Size(82, 499);
             this.panelSettings.TabIndex = 7;
+            // 
+            // FillCheckBox
+            // 
+            this.FillCheckBox.AutoSize = true;
+            this.FillCheckBox.Location = new System.Drawing.Point(16, 83);
+            this.FillCheckBox.Name = "FillCheckBox";
+            this.FillCheckBox.Size = new System.Drawing.Size(60, 16);
+            this.FillCheckBox.TabIndex = 17;
+            this.FillCheckBox.Text = "Fill ?";
+            this.FillCheckBox.UseVisualStyleBackColor = true;
             // 
             // buttonCreateAnimation
             // 
@@ -405,16 +415,6 @@ namespace VectorPainerPro
             this.panelMain.Size = new System.Drawing.Size(945, 499);
             this.panelMain.TabIndex = 11;
             // 
-            // FillCheckBox
-            // 
-            this.FillCheckBox.AutoSize = true;
-            this.FillCheckBox.Location = new System.Drawing.Point(16, 83);
-            this.FillCheckBox.Name = "FillCheckBox";
-            this.FillCheckBox.Size = new System.Drawing.Size(60, 16);
-            this.FillCheckBox.TabIndex = 17;
-            this.FillCheckBox.Text = "Fill ?";
-            this.FillCheckBox.UseVisualStyleBackColor = true;
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -424,9 +424,11 @@ namespace VectorPainerPro
             this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.toolStripTools);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.KeyPreview = true;
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "MainForm";
             this.Text = "VectorPainter";
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyDown);
             this.toolStripTools.ResumeLayout(false);
             this.toolStripTools.PerformLayout();
             this.panelSettings.ResumeLayout(false);
