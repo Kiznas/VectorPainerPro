@@ -631,22 +631,32 @@ namespace VectorPainerPro
         int currentAnimationIndex;
         int currentRepeatIndex;
         float angle = 0;
+        string stream;
+        private void button_Load_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog theDialog = new OpenFileDialog();
+            theDialog.Title = "Open Text File";
+            theDialog.Filter = "JSON files|*.json";
+            theDialog.InitialDirectory = @"C:\";
+            if (theDialog.ShowDialog() == DialogResult.OK)
+            {
+                stream = theDialog.FileName;
+            }
+        }
+
 
         private void buttonPlay_Click(object sender, EventArgs e)
         {
             if (!wasStopped)
             {
-                using (StreamReader sr = new StreamReader(
-                    @"C:\Users\Klimt\source\repos\ClockAnim.json"))
+                using (StreamReader sr = new StreamReader(stream))
                 {
                     figureAnimation = JsonSerializer.Deserialize<FigureAnimation>(sr.ReadToEnd());
                 }
-
                 currentParams = (ToolParams)figureAnimation.ToolParams.Clone();
                 currentAnimationIndex = 0;
                 currentRepeatIndex = 0;
             }
-
             cancelationTokenSource = new CancellationTokenSource();
             Thread thread = new Thread(() => Test(cancelationTokenSource.Token));
             thread.Start();
@@ -799,5 +809,6 @@ namespace VectorPainerPro
         {
             statusLabelCanvaSize.Text = "Image Size " + pictureBox.Width + " : " + pictureBox.Height;
         }
+
     }
 }

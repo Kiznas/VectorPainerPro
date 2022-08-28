@@ -61,6 +61,7 @@ namespace VectorPainerPro
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.statusLabelCanvaSize = new System.Windows.Forms.ToolStripStatusLabel();
             this.panelMain = new System.Windows.Forms.Panel();
+            this.button_Load = new System.Windows.Forms.Button();
             this.toolStripTools.SuspendLayout();
             this.panelSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarLineThickness)).BeginInit();
@@ -192,6 +193,8 @@ namespace VectorPainerPro
             // 
             // panelSettings
             // 
+            this.panelSettings.Controls.Add(this.buttonCreateAnimation);
+            this.panelSettings.Controls.Add(this.button_Load);
             this.panelSettings.Controls.Add(this.label1);
             this.panelSettings.Controls.Add(this.buttonRepeat);
             this.panelSettings.Controls.Add(this.buttonStop);
@@ -344,7 +347,6 @@ namespace VectorPainerPro
             // panelPictureBox
             // 
             this.panelPictureBox.AutoScroll = true;
-            this.panelPictureBox.Controls.Add(this.buttonCreateAnimation);
             this.panelPictureBox.Controls.Add(this.pictureBox);
             this.panelPictureBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelPictureBox.Location = new System.Drawing.Point(0, 0);
@@ -355,9 +357,9 @@ namespace VectorPainerPro
             // 
             // buttonCreateAnimation
             // 
-            this.buttonCreateAnimation.Location = new System.Drawing.Point(715, 420);
+            this.buttonCreateAnimation.Location = new System.Drawing.Point(2, 441);
             this.buttonCreateAnimation.Name = "buttonCreateAnimation";
-            this.buttonCreateAnimation.Size = new System.Drawing.Size(108, 23);
+            this.buttonCreateAnimation.Size = new System.Drawing.Size(79, 37);
             this.buttonCreateAnimation.TabIndex = 9;
             this.buttonCreateAnimation.Text = "Add new anim";
             this.buttonCreateAnimation.UseVisualStyleBackColor = true;
@@ -390,6 +392,16 @@ namespace VectorPainerPro
             this.panelMain.Name = "panelMain";
             this.panelMain.Size = new System.Drawing.Size(945, 499);
             this.panelMain.TabIndex = 11;
+            // 
+            // button_Load
+            // 
+            this.button_Load.Location = new System.Drawing.Point(4, 412);
+            this.button_Load.Name = "button_Load";
+            this.button_Load.Size = new System.Drawing.Size(75, 23);
+            this.button_Load.TabIndex = 16;
+            this.button_Load.Text = "Load anim";
+            this.button_Load.UseVisualStyleBackColor = true;
+            this.button_Load.Click += new System.EventHandler(this.button_Load_Click);
             // 
             // MainForm
             // 
@@ -449,5 +461,6 @@ namespace VectorPainerPro
         private System.Windows.Forms.Button buttonPlay;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button buttonCreateAnimation;
+        private System.Windows.Forms.Button button_Load;
     }
 }
