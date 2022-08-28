@@ -530,7 +530,9 @@ namespace VectorPainerPro
         {
             var found = false;
             (Point startCorner, Point endCorner) frame = (point, point);
-            Shape foundShape = new Shape();
+            Shape? foundShape = new Shape();
+            bool isShiftKeyPressed = (Control.ModifierKeys == Keys.Shift);
+
             foreach (var shape in fileShapes)
             {
                 if (shape.ToolType == ToolType.Pencil)
@@ -554,6 +556,20 @@ namespace VectorPainerPro
                             break;
                         }
                     }
+                    if (found)
+                    {
+                        if (isShiftKeyPressed)
+                        {
+                            found = false;
+                            isShiftKeyPressed = false;
+                            foundShape = null;
+                        }
+                        else
+                        {
+                            foundShape = shape;
+                            break;
+                        }
+                    }
                 }
                 else
                 {
@@ -564,11 +580,20 @@ namespace VectorPainerPro
                     found = frame.startCorner != point || frame.endCorner != point;
                     if (found)
                     {
-                        foundShape = shape;
-                        break;
+                        if (isShiftKeyPressed)
+                        {
+                            found = false;
+                            isShiftKeyPressed = false;
+                        }
+                        else
+                        {
+                            foundShape = shape;
+                            break;
+                        }
                     }
                 }
             }
+
             if (found)
             {
                 SelectionFrame selectionFrame = new SelectionFrame();
