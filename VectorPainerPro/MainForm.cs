@@ -49,6 +49,7 @@ namespace VectorPainerPro
             InitializeComponent();
             pictureBox.Image = new Bitmap(pictureBox.Width, pictureBox.Height);
             _temp = (Bitmap)pictureBox.Image.Clone();
+
             SetStatusStripInfo();
         }
 
@@ -862,5 +863,18 @@ namespace VectorPainerPro
             statusLabelCanvaSize.Text = "Image Size " + pictureBox.Width + " : " + pictureBox.Height;
         }
 
+        private void MainForm_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyData == Keys.Delete)
+            {
+                if (selectedShape != null)
+                {
+                    pictureBox.Enabled = false;
+                    fileShapes.Remove(selectedShape);
+                    DrawFromList();
+                    pictureBox.Enabled = true;
+                }
+            }
+        }
     }
 }
