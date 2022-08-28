@@ -12,29 +12,68 @@ namespace VectorModderPack
         public Bitmap Icon => Resources.rectangle;
 
         public string ToolTitle => nameof(Resources.rectangle);
+
         static void Swap<T>(ref T x, ref T y)
         {
-            T t = y;
-            y = x;
-            x = t;
+            (x, y) = (y, x);
         }
 
         public (Point, Point) CheckIsFound(Point start, Point end, Point selection)
         {
-            bool isfound = false;
+            int startX = start.X;
+            int startY = start.Y;
+            int endX = end.X;
+            int endY = end.Y;
 
-            if ((selection.X > start.X && selection.X < end.X) &&
-                (selection.Y > start.Y && selection.Y < end.Y))
+            if (startX > endX)
             {
-                isfound = true;
+                Swap(ref startX, ref endX);
             }
+
+            if (startY > endY)
+            {
+                Swap(ref startY, ref endY);
+            }
+
+            bool isfound = ((selection.X > startX && selection.X < endX) &&
+                            (selection.Y > startY && selection.Y < endY));
 
             if (isfound)
             {
-                return (start, end);
+                Point point1 =
+                    new Point(startX, startY);
+                Point point2 =
+                    new Point(endX, endY);
+                return (point1, point2);
             }
-            else return (selection, selection);
+            else
+            {
+                return (selection, selection);
+            }
+        }
 
+        public (Point, Point) GetSelectionFrame(Point start, Point end)
+        {
+            int startX = start.X;
+            int startY = start.Y;
+            int endX = end.X;
+            int endY = end.Y;
+
+            if (startX > endX)
+            {
+                Swap(ref startX, ref endX);
+            }
+
+            if (startY > endY)
+            {
+                Swap(ref startY, ref endY);
+            }
+
+            Point point1 =
+                new Point(startX, startY);
+            Point point2 =
+                    new Point(endX, endY);
+            return (point1, point2);
         }
 
         public void Draw(Graphics graphics, Pen pen, Point start, Point end)
