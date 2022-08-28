@@ -45,14 +45,19 @@ namespace VectorPainerPro
             this.btnPencil = new System.Windows.Forms.ToolStripButton();
             this.openDllDialog = new System.Windows.Forms.OpenFileDialog();
             this.panelSettings = new System.Windows.Forms.Panel();
+            this.label1 = new System.Windows.Forms.Label();
+            this.buttonRepeat = new System.Windows.Forms.Button();
+            this.buttonStop = new System.Windows.Forms.Button();
+            this.buttonPlay = new System.Windows.Forms.Button();
+            this.labelMainColor = new System.Windows.Forms.Label();
             this.labelFillColor = new System.Windows.Forms.Label();
             this.btnFillColor = new System.Windows.Forms.Button();
-            this.labelMainColor = new System.Windows.Forms.Label();
             this.btnMainColor = new System.Windows.Forms.Button();
             this.labelLineThickness = new System.Windows.Forms.Label();
             this.trackBarLineThickness = new System.Windows.Forms.TrackBar();
             this.pictureBox = new System.Windows.Forms.PictureBox();
             this.panelPictureBox = new System.Windows.Forms.Panel();
+            this.buttonCreateAnimation = new System.Windows.Forms.Button();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.statusLabelCanvaSize = new System.Windows.Forms.ToolStripStatusLabel();
             this.panelMain = new System.Windows.Forms.Panel();
@@ -187,23 +192,84 @@ namespace VectorPainerPro
             // 
             // panelSettings
             // 
+            this.panelSettings.Controls.Add(this.label1);
+            this.panelSettings.Controls.Add(this.buttonRepeat);
+            this.panelSettings.Controls.Add(this.buttonStop);
+            this.panelSettings.Controls.Add(this.buttonPlay);
+            this.panelSettings.Controls.Add(this.labelMainColor);
             this.panelSettings.Controls.Add(this.labelFillColor);
             this.panelSettings.Controls.Add(this.btnFillColor);
-            this.panelSettings.Controls.Add(this.labelMainColor);
             this.panelSettings.Controls.Add(this.btnMainColor);
             this.panelSettings.Controls.Add(this.labelLineThickness);
             this.panelSettings.Controls.Add(this.trackBarLineThickness);
             this.panelSettings.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panelSettings.Location = new System.Drawing.Point(870, 0);
+            this.panelSettings.Location = new System.Drawing.Point(863, 0);
             this.panelSettings.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panelSettings.Name = "panelSettings";
-            this.panelSettings.Size = new System.Drawing.Size(75, 499);
+            this.panelSettings.Size = new System.Drawing.Size(82, 499);
             this.panelSettings.TabIndex = 7;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(11, 354);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(59, 24);
+            this.label1.TabIndex = 15;
+            this.label1.Text = "Animation\r\ncontrols\r\n";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // buttonRepeat
+            // 
+            this.buttonRepeat.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.buttonRepeat.ForeColor = System.Drawing.SystemColors.Control;
+            this.buttonRepeat.Image = ((System.Drawing.Image)(resources.GetObject("buttonRepeat.Image")));
+            this.buttonRepeat.Location = new System.Drawing.Point(56, 381);
+            this.buttonRepeat.Name = "buttonRepeat";
+            this.buttonRepeat.Size = new System.Drawing.Size(25, 25);
+            this.buttonRepeat.TabIndex = 14;
+            this.buttonRepeat.UseVisualStyleBackColor = true;
+            this.buttonRepeat.Click += new System.EventHandler(this.buttonRepeat_Click);
+            // 
+            // buttonStop
+            // 
+            this.buttonStop.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.buttonStop.ForeColor = System.Drawing.SystemColors.Control;
+            this.buttonStop.Image = ((System.Drawing.Image)(resources.GetObject("buttonStop.Image")));
+            this.buttonStop.Location = new System.Drawing.Point(28, 381);
+            this.buttonStop.Name = "buttonStop";
+            this.buttonStop.Size = new System.Drawing.Size(25, 25);
+            this.buttonStop.TabIndex = 13;
+            this.buttonStop.UseVisualStyleBackColor = true;
+            this.buttonStop.Click += new System.EventHandler(this.buttonStop_Click);
+            // 
+            // buttonPlay
+            // 
+            this.buttonPlay.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.buttonPlay.ForeColor = System.Drawing.SystemColors.Control;
+            this.buttonPlay.Image = ((System.Drawing.Image)(resources.GetObject("buttonPlay.Image")));
+            this.buttonPlay.Location = new System.Drawing.Point(0, 381);
+            this.buttonPlay.Name = "buttonPlay";
+            this.buttonPlay.Size = new System.Drawing.Size(25, 25);
+            this.buttonPlay.TabIndex = 12;
+            this.buttonPlay.UseVisualStyleBackColor = true;
+            this.buttonPlay.Click += new System.EventHandler(this.buttonPlay_Click);
+            // 
+            // labelMainColor
+            // 
+            this.labelMainColor.Dock = System.Windows.Forms.DockStyle.Top;
+            this.labelMainColor.Font = new System.Drawing.Font("Segoe UI Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.labelMainColor.Location = new System.Drawing.Point(0, 0);
+            this.labelMainColor.Name = "labelMainColor";
+            this.labelMainColor.Size = new System.Drawing.Size(82, 18);
+            this.labelMainColor.TabIndex = 9;
+            this.labelMainColor.Text = "Main Color";
+            this.labelMainColor.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // labelFillColor
             // 
             this.labelFillColor.Font = new System.Drawing.Font("Segoe UI Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.labelFillColor.Location = new System.Drawing.Point(3, 86);
+            this.labelFillColor.Location = new System.Drawing.Point(7, 94);
             this.labelFillColor.Name = "labelFillColor";
             this.labelFillColor.Size = new System.Drawing.Size(72, 18);
             this.labelFillColor.TabIndex = 11;
@@ -216,7 +282,7 @@ namespace VectorPainerPro
             this.btnFillColor.ForeColor = System.Drawing.SystemColors.Control;
             this.btnFillColor.Image = ((System.Drawing.Image)(resources.GetObject("btnFillColor.Image")));
             this.btnFillColor.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.btnFillColor.Location = new System.Drawing.Point(3, 96);
+            this.btnFillColor.Location = new System.Drawing.Point(7, 104);
             this.btnFillColor.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnFillColor.Name = "btnFillColor";
             this.btnFillColor.Size = new System.Drawing.Size(69, 66);
@@ -224,24 +290,13 @@ namespace VectorPainerPro
             this.btnFillColor.UseVisualStyleBackColor = true;
             this.btnFillColor.Click += new System.EventHandler(this.btnFillColor_Click);
             // 
-            // labelMainColor
-            // 
-            this.labelMainColor.Dock = System.Windows.Forms.DockStyle.Top;
-            this.labelMainColor.Font = new System.Drawing.Font("Segoe UI Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.labelMainColor.Location = new System.Drawing.Point(0, 0);
-            this.labelMainColor.Name = "labelMainColor";
-            this.labelMainColor.Size = new System.Drawing.Size(75, 18);
-            this.labelMainColor.TabIndex = 9;
-            this.labelMainColor.Text = "Main Color";
-            this.labelMainColor.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // btnMainColor
             // 
             this.btnMainColor.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnMainColor.ForeColor = System.Drawing.SystemColors.Control;
             this.btnMainColor.Image = ((System.Drawing.Image)(resources.GetObject("btnMainColor.Image")));
             this.btnMainColor.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.btnMainColor.Location = new System.Drawing.Point(3, 20);
+            this.btnMainColor.Location = new System.Drawing.Point(6, 12);
             this.btnMainColor.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnMainColor.Name = "btnMainColor";
             this.btnMainColor.Size = new System.Drawing.Size(69, 64);
@@ -252,18 +307,18 @@ namespace VectorPainerPro
             // labelLineThickness
             // 
             this.labelLineThickness.Font = new System.Drawing.Font("Segoe UI Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.labelLineThickness.Location = new System.Drawing.Point(3, 164);
+            this.labelLineThickness.Location = new System.Drawing.Point(7, 172);
             this.labelLineThickness.Name = "labelLineThickness";
-            this.labelLineThickness.Size = new System.Drawing.Size(72, 28);
+            this.labelLineThickness.Size = new System.Drawing.Size(72, 35);
             this.labelLineThickness.TabIndex = 7;
-            this.labelLineThickness.Text = "Line Thickness";
+            this.labelLineThickness.Text = "Line\r\nWidth\r\n";
             this.labelLineThickness.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // trackBarLineThickness
             // 
             this.trackBarLineThickness.AutoSize = false;
             this.trackBarLineThickness.LargeChange = 10;
-            this.trackBarLineThickness.Location = new System.Drawing.Point(18, 184);
+            this.trackBarLineThickness.Location = new System.Drawing.Point(22, 192);
             this.trackBarLineThickness.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.trackBarLineThickness.Name = "trackBarLineThickness";
             this.trackBarLineThickness.Orientation = System.Windows.Forms.Orientation.Vertical;
@@ -289,13 +344,24 @@ namespace VectorPainerPro
             // panelPictureBox
             // 
             this.panelPictureBox.AutoScroll = true;
+            this.panelPictureBox.Controls.Add(this.buttonCreateAnimation);
             this.panelPictureBox.Controls.Add(this.pictureBox);
             this.panelPictureBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelPictureBox.Location = new System.Drawing.Point(0, 0);
             this.panelPictureBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panelPictureBox.Name = "panelPictureBox";
-            this.panelPictureBox.Size = new System.Drawing.Size(870, 499);
+            this.panelPictureBox.Size = new System.Drawing.Size(863, 499);
             this.panelPictureBox.TabIndex = 9;
+            // 
+            // buttonCreateAnimation
+            // 
+            this.buttonCreateAnimation.Location = new System.Drawing.Point(715, 420);
+            this.buttonCreateAnimation.Name = "buttonCreateAnimation";
+            this.buttonCreateAnimation.Size = new System.Drawing.Size(108, 23);
+            this.buttonCreateAnimation.TabIndex = 9;
+            this.buttonCreateAnimation.Text = "Add new anim";
+            this.buttonCreateAnimation.UseVisualStyleBackColor = true;
+            this.buttonCreateAnimation.Click += new System.EventHandler(this.buttonCreateAnimation_Click);
             // 
             // statusStrip
             // 
@@ -340,6 +406,7 @@ namespace VectorPainerPro
             this.toolStripTools.ResumeLayout(false);
             this.toolStripTools.PerformLayout();
             this.panelSettings.ResumeLayout(false);
+            this.panelSettings.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarLineThickness)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();
             this.panelPictureBox.ResumeLayout(false);
@@ -377,5 +444,10 @@ namespace VectorPainerPro
         private System.Windows.Forms.ToolStripButton btnLoadTool;
         private System.Windows.Forms.ToolStripButton btnSave;
         private System.Windows.Forms.ToolStripButton btnSelect;
+        private System.Windows.Forms.Button buttonRepeat;
+        private System.Windows.Forms.Button buttonStop;
+        private System.Windows.Forms.Button buttonPlay;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button buttonCreateAnimation;
     }
 }
