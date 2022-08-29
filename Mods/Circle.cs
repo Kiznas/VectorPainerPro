@@ -20,20 +20,31 @@ namespace VectorModderPack
 
         public (Point, Point) CheckIsFound(Point start, Point end, Point selection)
         {
-            int distX = Math.Abs(end.X - start.X);
+            int startX = start.X;
+            int startY = start.Y;
+            int endX = end.X;
+            int endY = end.Y;
+
+            if (startX > endX)
+            {
+                Swap(ref startX, ref endX);
+            }
+
+            if (startY > endY)
+            {
+                Swap(ref startY, ref endY);
+            }
+
+            int distX = Math.Abs(endX - startX);
             int radius = distX / 2;
 
-            Point center = new Point(start.X + radius, start.Y + radius);
+            Point center = new Point(startX + radius, startY + radius);
 
             bool isfound = Math.Pow(selection.X - center.X, 2) + Math.Pow(selection.Y - center.Y, 2) < Math.Pow(radius, 2);
 
             if (isfound)
             {
-                Point point1 =
-                    new Point(start.X, start.Y);
-                Point point2 =
-                    new Point(start.X + 2 * radius, start.Y + 2 * radius);
-                return (point1, point2);
+                return GetSelectionFrame(start, end);
             }
             else
             {
@@ -43,13 +54,28 @@ namespace VectorModderPack
 
         public (Point, Point) GetSelectionFrame(Point start, Point end)
         {
-            int distX = Math.Abs(end.X - start.X);
+            int startX = start.X;
+            int startY = start.Y;
+            int endX = end.X;
+            int endY = end.Y;
+
+            if (startX > endX)
+            {
+                Swap(ref startX, ref endX);
+            }
+
+            if (startY > endY)
+            {
+                Swap(ref startY, ref endY);
+            }
+
+            int distX = Math.Abs(endX - startX);
             int radius = distX / 2;
 
             Point point1 =
-                new Point(start.X, start.Y);
+                new Point(startX, startY);
             Point point2 =
-                new Point(start.X + 2 * radius, start.Y + 2 * radius);
+                new Point(startX + 2 * radius, startY + 2 * radius);
 
             return (point1, point2);
         }

@@ -245,14 +245,7 @@ namespace VectorPainerPro
             {
                 if (selectedShape.ToolType == ToolType.Pencil)
                 {
-                    var minX = selectedShape.Points.Select(x => x.X).Min();
-                    var minY = selectedShape.Points.Select(x => x.Y).Min();
-                    var maxX = selectedShape.Points.Select(x => x.X).Max();
-                    var maxY = selectedShape.Points.Select(x => x.Y).Max();
-                    var framePointStart = new Point(minX, minY);
-                    var framePointEnd = new Point(maxX, maxY);
-
-                    frame = (framePointStart, framePointEnd);
+                    frame = GetPencilFramePoints();
                 }
                 else
                 {
@@ -288,14 +281,7 @@ namespace VectorPainerPro
             {
                 if (selectedShape.ToolType == ToolType.Pencil)
                 {
-                    var minX = selectedShape.Points.Select(x => x.X).Min();
-                    var minY = selectedShape.Points.Select(x => x.Y).Min();
-                    var maxX = selectedShape.Points.Select(x => x.X).Max();
-                    var maxY = selectedShape.Points.Select(x => x.Y).Max();
-                    var framePointStart = new Point(minX, minY);
-                    var framePointEnd = new Point(maxX, maxY);
-
-                    frame = (framePointStart, framePointEnd);
+                    frame = GetPencilFramePoints();
                 }
                 else
                 {
@@ -329,14 +315,7 @@ namespace VectorPainerPro
             {
                 if (selectedShape.ToolType == ToolType.Pencil)
                 {
-                    var minX = selectedShape.Points.Select(x => x.X).Min();
-                    var minY = selectedShape.Points.Select(x => x.Y).Min();
-                    var maxX = selectedShape.Points.Select(x => x.X).Max();
-                    var maxY = selectedShape.Points.Select(x => x.Y).Max();
-                    var framePointStart = new Point(minX, minY);
-                    var framePointEnd = new Point(maxX, maxY);
-
-                    frame = (framePointStart, framePointEnd);
+                    frame = GetPencilFramePoints();
                 }
                 else
                 {
@@ -358,6 +337,16 @@ namespace VectorPainerPro
                 }
                 pictureBox.Enabled = true;
             }
+        }
+
+        private (Point framePointStart, Point framePointEnd) GetPencilFramePoints()
+        {
+            var minX = selectedShape.Points.Select(x => x.X).Min();
+            var minY = selectedShape.Points.Select(x => x.Y).Min();
+            var maxX = selectedShape.Points.Select(x => x.X).Max();
+            var maxY = selectedShape.Points.Select(x => x.Y).Max();
+
+            return (new Point(minX, minY), new Point(maxX, maxY));
         }
 
         #endregion

@@ -54,12 +54,7 @@ namespace Mods
 
                 if (isfound)
                 {
-                    Point point1 =
-                        new Point(startX, startY);
-                    Point point2 =
-                        new Point(endX, endY);
-                    
-                    return (point1, point2);
+                    return GetSelectionFrame(start, end);
                 }
                 else
                 {
